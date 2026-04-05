@@ -1,0 +1,17 @@
+# Package metadata. Required.
+package:
+  # The name of the package. Required.
+  name: hilo-trigger
+
+  # The list of package authors and contributors. Optional.
+  # By convention, authors should be listed in the form shown below.
+  authors: ["Albert L. Cheung <albert.cheung@cern.ch>"]
+
+sources:
+  # RTL sources
+  - hw/rtl/*
+
+  # Simulation / testbench
+  - target: simulation
+    files:
+      - hw/sim/*

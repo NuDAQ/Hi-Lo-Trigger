@@ -14,8 +14,8 @@
 !hilo_trigger/
 !hilo_trigger/**/
 
-!HDL/
-!HDL/**
+!hw/
+!hw/**
 
 !analysis/
 !analysis/**
