@@ -1,17 +1,27 @@
-# Package metadata. Required.
 package:
-  # The name of the package. Required.
   name: hilo-trigger
-
-  # The list of package authors and contributors. Optional.
-  # By convention, authors should be listed in the form shown below.
-  authors: ["Albert L. Cheung <albert.cheung@cern.ch>"]
+  authors:
+    - "Albert L. Cheung <albert.cheung@cern.ch>"
 
 sources:
-  # RTL sources
-  - hw/rtl/*
+  - files:
+      - hw/rtl/PRE_TRIGGER_PKG.vhd     
+      - hw/rtl/Mult_to_bin.vhd
+      - hw/rtl/Pre_trigger_1ch.vhd
+      - hw/rtl/Pre_trigger.vhd
 
-  # Simulation / testbench
   - target: simulation
     files:
-      - hw/sim/*
+      - hw/sim/tb_pre_trigger_1ch.vhd
+      - hw/sim/tb_pre_trigger.vhd
+      - hw/sim/tb_pre_trigger_cosim.vhd
+
+  - target: synthesis
+    files:
+      - hw/constraints/pre_trigger.xdc
+
+  - target: utilization
+    files:
+      - hw/sim/PRE_TRIGGER_UTIL_WRAPPER.vhd
+
+
