@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="impl_1" LaunchPart="xcku5p-ffvb676-2-e" LaunchTime="1775429997">
+  <File Type="POSTROUTE-PHYSOPT-RQS-RPT" Name="postroute_physopt_report_qor_suggestions_0.rpt"/>
+  <File Type="ROUTE-RQS-RPT" Name="route_report_qor_suggestions_0.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-RQS" Name="PRE_TRIGGER_UTIL_WRAPPER_postroute_physopted.rqs"/>
+  <File Type="ROUTE-RQS" Name="PRE_TRIGGER_UTIL_WRAPPER_routed.rqs"/>
+  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <File Type="RDI-RDI" Name="PRE_TRIGGER_UTIL_WRAPPER.vdi"/>
+  <File Type="BG-DRC" Name="PRE_TRIGGER_UTIL_WRAPPER.drc"/>
+  <File Type="BG-BGN" Name="PRE_TRIGGER_UTIL_WRAPPER.bgn"/>
+  <File Type="BITSTR-SYSDEF" Name="PRE_TRIGGER_UTIL_WRAPPER.sysdef"/>
+  <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
+  <File Type="BITSTR-LTX" Name="PRE_TRIGGER_UTIL_WRAPPER.ltx"/>
+  <File Type="RBD_FILE" Name="PRE_TRIGGER_UTIL_WRAPPER.rbd"/>
+  <File Type="NPI_FILE" Name="PRE_TRIGGER_UTIL_WRAPPER.npi"/>
+  <File Type="RNPI_FILE" Name="PRE_TRIGGER_UTIL_WRAPPER.rnpi"/>
+  <File Type="CFI_FILE" Name="PRE_TRIGGER_UTIL_WRAPPER.cfi"/>
+  <File Type="RCFI_FILE" Name="PRE_TRIGGER_UTIL_WRAPPER.rcfi"/>
+  <File Type="PL-PDI-FILE" Name="PRE_TRIGGER_UTIL_WRAPPER_pld.pdi"/>
+  <File Type="BOOT-PDI-FILE" Name="PRE_TRIGGER_UTIL_WRAPPER_boot.pdi"/>
+  <File Type="PDI-FILE" Name="PRE_TRIGGER_UTIL_WRAPPER.pdi"/>
+  <File Type="BITSTR-MMI" Name="PRE_TRIGGER_UTIL_WRAPPER.mmi"/>
+  <File Type="BITSTR-BMM" Name="PRE_TRIGGER_UTIL_WRAPPER_bd.bmm"/>
+  <File Type="BITSTR-NKY" Name="PRE_TRIGGER_UTIL_WRAPPER.nky"/>
+  <File Type="BITSTR-RBT" Name="PRE_TRIGGER_UTIL_WRAPPER.rbt"/>
+  <File Type="BITSTR-MSK" Name="PRE_TRIGGER_UTIL_WRAPPER.msk"/>
+  <File Type="BG-BIN" Name="PRE_TRIGGER_UTIL_WRAPPER.bin"/>
+  <File Type="BG-BIT" Name="PRE_TRIGGER_UTIL_WRAPPER.bit"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="PRE_TRIGGER_UTIL_WRAPPER_bus_skew_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_bus_skew_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="PRE_TRIGGER_UTIL_WRAPPER_bus_skew_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="PRE_TRIGGER_UTIL_WRAPPER_postroute_physopt_bb.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-DCP" Name="PRE_TRIGGER_UTIL_WRAPPER_postroute_physopt.dcp"/>
+  <File Type="ROUTE-RQS-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_rqs_routed.pb"/>
+  <File Type="ROUTE-BUS-SKEW-RPX" Name="PRE_TRIGGER_UTIL_WRAPPER_bus_skew_routed.rpx"/>
+  <File Type="ROUTE-BUS-SKEW-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_bus_skew_routed.pb"/>
+  <File Type="ROUTE-BUS-SKEW" Name="PRE_TRIGGER_UTIL_WRAPPER_bus_skew_routed.rpt"/>
+  <File Type="ROUTE-CLK" Name="PRE_TRIGGER_UTIL_WRAPPER_clock_utilization_routed.rpt"/>
+  <File Type="ROUTE-SIMILARITY" Name="PRE_TRIGGER_UTIL_WRAPPER_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-TIMING-RPX" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-TIMING-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_routed.pb"/>
+  <File Type="ROUTE-TIMINGSUMMARY" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_routed.rpt"/>
+  <File Type="ROUTE-STATUS-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_route_status.pb"/>
+  <File Type="ROUTE-STATUS" Name="PRE_TRIGGER_UTIL_WRAPPER_route_status.rpt"/>
+  <File Type="ROUTE-PWR-RPX" Name="PRE_TRIGGER_UTIL_WRAPPER_power_routed.rpx"/>
+  <File Type="ROUTE-PWR-SUM" Name="PRE_TRIGGER_UTIL_WRAPPER_power_summary_routed.pb"/>
+  <File Type="ROUTE-PWR" Name="PRE_TRIGGER_UTIL_WRAPPER_power_routed.rpt"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_methodology_drc_routed.pb"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="PRE_TRIGGER_UTIL_WRAPPER_methodology_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="PRE_TRIGGER_UTIL_WRAPPER_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-DRC-RPX" Name="PRE_TRIGGER_UTIL_WRAPPER_drc_routed.rpx"/>
+  <File Type="ROUTE-DRC-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_drc_routed.pb"/>
+  <File Type="ROUTE-DRC" Name="PRE_TRIGGER_UTIL_WRAPPER_drc_routed.rpt"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="PRE_TRIGGER_UTIL_WRAPPER_routed_bb.dcp"/>
+  <File Type="ROUTE-DCP" Name="PRE_TRIGGER_UTIL_WRAPPER_routed.dcp"/>
+  <File Type="ROUTE-ERROR-DCP" Name="PRE_TRIGGER_UTIL_WRAPPER_routed_error.dcp"/>
+  <File Type="PHYSOPT-TIMING" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_physopted.rpt"/>
+  <File Type="PHYSOPT-DRC" Name="PRE_TRIGGER_UTIL_WRAPPER_drc_physopted.rpt"/>
+  <File Type="PHYSOPT-DCP" Name="PRE_TRIGGER_UTIL_WRAPPER_physopt.dcp"/>
+  <File Type="POSTPLACE-PWROPT-TIMING" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_postplace_pwropted.rpt"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="PRE_TRIGGER_UTIL_WRAPPER_postplace_pwropt.dcp"/>
+  <File Type="PLACE-RQA-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_rqa_placed.pb"/>
+  <File Type="PLACE-TIMING" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_placed.rpt"/>
+  <File Type="PLACE-PRE-SIMILARITY" Name="PRE_TRIGGER_UTIL_WRAPPER_incremental_reuse_pre_placed.rpt"/>
+  <File Type="PLACE-SIMILARITY" Name="PRE_TRIGGER_UTIL_WRAPPER_incremental_reuse_placed.rpt"/>
+  <File Type="PLACE-CTRL" Name="PRE_TRIGGER_UTIL_WRAPPER_control_sets_placed.rpt"/>
+  <File Type="PLACE-UTIL-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_utilization_placed.pb"/>
+  <File Type="PLACE-UTIL" Name="PRE_TRIGGER_UTIL_WRAPPER_utilization_placed.rpt"/>
+  <File Type="PLACE-CLK" Name="PRE_TRIGGER_UTIL_WRAPPER_clock_utilization_placed.rpt"/>
+  <File Type="PLACE-IO" Name="PRE_TRIGGER_UTIL_WRAPPER_io_placed.rpt"/>
+  <File Type="PLACE-DCP" Name="PRE_TRIGGER_UTIL_WRAPPER_placed.dcp"/>
+  <File Type="PWROPT-TIMING" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_pwropted.rpt"/>
+  <File Type="PWROPT-DRC" Name="PRE_TRIGGER_UTIL_WRAPPER_drc_pwropted.rpt"/>
+  <File Type="PWROPT-DCP" Name="PRE_TRIGGER_UTIL_WRAPPER_pwropt.dcp"/>
+  <File Type="OPT-RQA-PB" Name="PRE_TRIGGER_UTIL_WRAPPER_rqa_opted.pb"/>
+  <File Type="OPT-TIMING" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_opted.rpt"/>
+  <File Type="OPT-HWDEF" Name="PRE_TRIGGER_UTIL_WRAPPER.hwdef"/>
+  <File Type="OPT-METHODOLOGY-DRC" Name="PRE_TRIGGER_UTIL_WRAPPER_methodology_drc_opted.rpt"/>
+  <File Type="OPT-DRC" Name="PRE_TRIGGER_UTIL_WRAPPER_drc_opted.rpt"/>
+  <File Type="OPT-DCP" Name="PRE_TRIGGER_UTIL_WRAPPER_opt.dcp"/>
+  <File Type="INIT-TIMING" Name="PRE_TRIGGER_UTIL_WRAPPER_timing_summary_init.rpt"/>
+  <File Type="REPORTS-TCL" Name="PRE_TRIGGER_UTIL_WRAPPER_reports.tcl"/>
+  <File Type="PA-TCL" Name="PRE_TRIGGER_UTIL_WRAPPER.tcl"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PPRDIR/../hw/rtl/Mult_to_bin.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../hw/rtl/PRE_TRIGGER_PKG.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../hw/rtl/Pre_trigger_1ch.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../hw/rtl/Pre_trigger.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../hw/sim/PRE_TRIGGER_UTIL_WRAPPER.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../hw/constraints/pre_trigger.xdc">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="PRE_TRIGGER_UTIL_WRAPPER"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <File Path="$PPRDIR/../hw/constraints/pre_trigger.xdc">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
+    <Filter Type="Utils"/>
+    <File Path="$PSRCDIR/utils_1/imports/synth_1/PRE_TRIGGER.dcp">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedInSteps" Val="synth_1"/>
+        <Attr Name="AutoDcp" Val="1"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2023">
+      <Desc>Default settings for Implementation.</Desc>
+    </StratHandle>
+    <Step Id="init_design"/>
+    <Step Id="opt_design"/>
+    <Step Id="power_opt_design"/>
+    <Step Id="place_design"/>
+    <Step Id="post_place_power_opt_design">
+      <Option Id="MoreOptsStr"><![CDATA[-mode out_of_context]]></Option>
+    </Step>
+    <Step Id="phys_opt_design"/>
+    <Step Id="route_design"/>
+    <Step Id="post_route_phys_opt_design"/>
+    <Step Id="write_bitstream"/>
+  </Strategy>
+</GenRun>

@@ -4,15 +4,24 @@ package:
     - "Albert L. Cheung <albert.cheung@cern.ch>"
 
 sources:
-  - target: all(rtl)
-    files:
-      - hw/rtl/pre_trigger_pkg.vhd     
-      - hw/rtl/MULT2BIN.vhd
-      - hw/rtl/PRE_TRIGGER_1CH.vhd
-      - hw/rtl/PRE_TRIGGER.vhd
+  - files:
+      - hw/rtl/PRE_TRIGGER_PKG.vhd     
+      - hw/rtl/Mult_to_bin.vhd
+      - hw/rtl/Pre_trigger_1ch.vhd
+      - hw/rtl/Pre_trigger.vhd
 
   - target: simulation
     files:
       - hw/sim/tb_pre_trigger_1ch.vhd
       - hw/sim/tb_pre_trigger.vhd
       - hw/sim/tb_pre_trigger_cosim.vhd
+
+  - target: synthesis
+    files:
+      - hw/constraints/pre_trigger.xdc
+
+  - target: utilization
+    files:
+      - hw/sim/PRE_TRIGGER_UTIL_WRAPPER.vhd
+
+

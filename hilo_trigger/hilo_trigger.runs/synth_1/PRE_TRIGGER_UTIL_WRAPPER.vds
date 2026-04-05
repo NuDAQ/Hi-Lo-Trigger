@@ -1,0 +1,266 @@
+#-----------------------------------------------------------
+# Vivado v2023.2 (64-bit)
+# SW Build 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Start of session at: Sun Apr  5 15:59:58 2026
+# Process ID: 91606
+# Current directory: /home/work1/Works/Hi-Lo-Trigger/hilo_trigger/hilo_trigger.runs/synth_1
+# Command line: vivado -log PRE_TRIGGER_UTIL_WRAPPER.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source PRE_TRIGGER_UTIL_WRAPPER.tcl
+# Log file: /home/work1/Works/Hi-Lo-Trigger/hilo_trigger/hilo_trigger.runs/synth_1/PRE_TRIGGER_UTIL_WRAPPER.vds
+# Journal file: /home/work1/Works/Hi-Lo-Trigger/hilo_trigger/hilo_trigger.runs/synth_1/vivado.jou
+# Running On: AlbertsUbuntu, OS: Linux, CPU Frequency: 800.321 MHz, CPU Physical cores: 24, Host memory: 16441 MB
+#-----------------------------------------------------------
+source PRE_TRIGGER_UTIL_WRAPPER.tcl -notrace
+create_project: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1365.961 ; gain = 61.836 ; free physical = 7250 ; free virtual = 35382
+WARNING: [filemgmt 56-128] File '/home/work1/Works/Hi-Lo-Trigger/hw/constraints/pre_trigger.xdc' is already in the project and will not be added again
+Command: read_checkpoint -auto_incremental -incremental /home/work1/Works/Hi-Lo-Trigger/hilo_trigger/hilo_trigger.srcs/utils_1/imports/synth_1/PRE_TRIGGER.dcp
+INFO: [Vivado 12-5825] Read reference checkpoint from /home/work1/Works/Hi-Lo-Trigger/hilo_trigger/hilo_trigger.srcs/utils_1/imports/synth_1/PRE_TRIGGER.dcp for incremental synthesis
+INFO: [Vivado 12-7989] Please ensure there are no constraint changes
+Command: synth_design -top PRE_TRIGGER_UTIL_WRAPPER -part xcku5p-ffvb676-2-e
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xcku5p'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xcku5p'
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 91630
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2724.520 ; gain = 331.777 ; free physical = 5612 ; free virtual = 33748
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'PRE_TRIGGER_UTIL_WRAPPER' [/home/work1/Works/Hi-Lo-Trigger/hw/sim/PRE_TRIGGER_UTIL_WRAPPER.vhd:19]
+INFO: [Synth 8-638] synthesizing module 'PRE_TRIGGER' [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Pre_trigger.vhd:21]
+INFO: [Synth 8-638] synthesizing module 'PRE_TRIGGER_1CH' [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Pre_trigger_1ch.vhd:19]
+	Parameter CH bound to: 0 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'PRE_TRIGGER_1CH' (0#1) [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Pre_trigger_1ch.vhd:19]
+INFO: [Synth 8-638] synthesizing module 'PRE_TRIGGER_1CH__parameterized0' [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Pre_trigger_1ch.vhd:19]
+	Parameter CH bound to: 1 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'PRE_TRIGGER_1CH__parameterized0' (0#1) [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Pre_trigger_1ch.vhd:19]
+INFO: [Synth 8-638] synthesizing module 'PRE_TRIGGER_1CH__parameterized1' [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Pre_trigger_1ch.vhd:19]
+	Parameter CH bound to: 2 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'PRE_TRIGGER_1CH__parameterized1' (0#1) [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Pre_trigger_1ch.vhd:19]
+INFO: [Synth 8-638] synthesizing module 'PRE_TRIGGER_1CH__parameterized2' [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Pre_trigger_1ch.vhd:19]
+	Parameter CH bound to: 3 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'PRE_TRIGGER_1CH__parameterized2' (0#1) [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Pre_trigger_1ch.vhd:19]
+INFO: [Synth 8-638] synthesizing module 'MULT2BIN' [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Mult_to_bin.vhd:17]
+WARNING: [Synth 8-614] signal 'BIN_THR' is read in the process but is not in the sensitivity list [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Mult_to_bin.vhd:33]
+INFO: [Synth 8-256] done synthesizing module 'MULT2BIN' (0#1) [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Mult_to_bin.vhd:17]
+INFO: [Synth 8-256] done synthesizing module 'PRE_TRIGGER' (0#1) [/home/work1/Works/Hi-Lo-Trigger/hw/rtl/Pre_trigger.vhd:21]
+INFO: [Synth 8-256] done synthesizing module 'PRE_TRIGGER_UTIL_WRAPPER' (0#1) [/home/work1/Works/Hi-Lo-Trigger/hw/sim/PRE_TRIGGER_UTIL_WRAPPER.vhd:19]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 3065.770 ; gain = 673.027 ; free physical = 5213 ; free virtual = 33355
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 3071.707 ; gain = 678.965 ; free physical = 5214 ; free virtual = 33357
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 3071.707 ; gain = 678.965 ; free physical = 5214 ; free virtual = 33357
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.05 . Memory (MB): peak = 3071.707 ; gain = 0.000 ; free physical = 5214 ; free virtual = 33357
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/work1/Works/Hi-Lo-Trigger/hw/constraints/pre_trigger.xdc]
+Finished Parsing XDC File [/home/work1/Works/Hi-Lo-Trigger/hw/constraints/pre_trigger.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3185.184 ; gain = 0.000 ; free physical = 5206 ; free virtual = 33349
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.1 ; elapsed = 00:00:00.03 . Memory (MB): peak = 3185.219 ; gain = 0.000 ; free physical = 5211 ; free virtual = 33354
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 3185.219 ; gain = 792.477 ; free physical = 5185 ; free virtual = 33328
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xcku5p-ffvb676-2-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 3185.219 ; gain = 792.477 ; free physical = 5185 ; free virtual = 33328
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 3185.219 ; gain = 792.477 ; free physical = 5185 ; free virtual = 33328
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:27 ; elapsed = 00:00:28 . Memory (MB): peak = 3185.219 ; gain = 792.477 ; free physical = 1654 ; free virtual = 29835
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input    8 Bit       Adders := 12    
+	   2 Input    7 Bit       Adders := 4     
+	   2 Input    6 Bit       Adders := 8     
+	   2 Input    3 Bit       Adders := 32    
+	   2 Input    2 Bit       Adders := 32    
+	   3 Input    2 Bit       Adders := 32    
++---XORs : 
+	   2 Input     12 Bit         XORs := 63    
++---Registers : 
+	               32 Bit    Registers := 8     
+	               12 Bit    Registers := 1     
+	                8 Bit    Registers := 12    
+	                1 Bit    Registers := 3     
++---Muxes : 
+	   2 Input   32 Bit        Muxes := 8     
+	   2 Input    8 Bit        Muxes := 12    
+	   2 Input    6 Bit        Muxes := 1     
+	   2 Input    5 Bit        Muxes := 4     
+	   2 Input    2 Bit        Muxes := 32    
+	  32 Input    1 Bit        Muxes := 12    
+	   2 Input    1 Bit        Muxes := 13028 
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 1824 (col length:96)
+BRAMs: 960 (col length: RAMB18 96 RAMB36 48)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:43 ; elapsed = 00:00:52 . Memory (MB): peak = 3185.219 ; gain = 792.477 ; free physical = 307 ; free virtual = 26370
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:47 ; elapsed = 00:00:57 . Memory (MB): peak = 3365.648 ; gain = 972.906 ; free physical = 303 ; free virtual = 26173
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:48 ; elapsed = 00:00:58 . Memory (MB): peak = 3405.695 ; gain = 1012.953 ; free physical = 354 ; free virtual = 26129
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:48 ; elapsed = 00:00:58 . Memory (MB): peak = 3413.703 ; gain = 1020.961 ; free physical = 338 ; free virtual = 26118
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:50 ; elapsed = 00:01:00 . Memory (MB): peak = 3413.703 ; gain = 1020.961 ; free physical = 337 ; free virtual = 26119
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:50 ; elapsed = 00:01:00 . Memory (MB): peak = 3413.703 ; gain = 1020.961 ; free physical = 337 ; free virtual = 26120
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:50 ; elapsed = 00:01:01 . Memory (MB): peak = 3413.703 ; gain = 1020.961 ; free physical = 336 ; free virtual = 26119
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:50 ; elapsed = 00:01:01 . Memory (MB): peak = 3413.703 ; gain = 1020.961 ; free physical = 336 ; free virtual = 26119
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:50 ; elapsed = 00:01:01 . Memory (MB): peak = 3413.703 ; gain = 1020.961 ; free physical = 336 ; free virtual = 26119
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:50 ; elapsed = 00:01:01 . Memory (MB): peak = 3413.703 ; gain = 1020.961 ; free physical = 336 ; free virtual = 26119
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-------+------+
+|      |Cell   |Count |
++------+-------+------+
+|1     |BUFG   |     1|
+|2     |CARRY8 |   172|
+|3     |LUT1   |   254|
+|4     |LUT2   |   210|
+|5     |LUT3   |   126|
+|6     |LUT4   |   228|
+|7     |LUT5   |   358|
+|8     |LUT6   |   313|
+|9     |FDCE   |   223|
+|10    |FDRE   |    33|
+|11    |IBUF   |    14|
+|12    |OBUF   |     1|
++------+-------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:50 ; elapsed = 00:01:01 . Memory (MB): peak = 3413.703 ; gain = 1020.961 ; free physical = 336 ; free virtual = 26119
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 1 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:48 ; elapsed = 00:00:59 . Memory (MB): peak = 3417.613 ; gain = 911.359 ; free physical = 8091 ; free virtual = 33887
+Synthesis Optimization Complete : Time (s): cpu = 00:00:52 ; elapsed = 00:01:03 . Memory (MB): peak = 3417.613 ; gain = 1024.871 ; free physical = 8091 ; free virtual = 33888
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 3421.703 ; gain = 0.000 ; free physical = 8084 ; free virtual = 33884
+INFO: [Netlist 29-17] Analyzing 187 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3464.691 ; gain = 0.000 ; free physical = 8056 ; free virtual = 33876
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 15 instances were transformed.
+  BUFG => BUFGCE: 1 instance 
+  IBUF => IBUF (IBUFCTRL, INBUF): 14 instances
+
+Synth Design complete | Checksum: 34282db6
+INFO: [Common 17-83] Releasing license: Synthesis
+35 Infos, 3 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:56 ; elapsed = 00:01:07 . Memory (MB): peak = 3464.727 ; gain = 2092.828 ; free physical = 8055 ; free virtual = 33876
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 9996.647; main = 2405.670; forked = 8072.140
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 15649.375; main = 3464.695; forked = 12235.668
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 3488.703 ; gain = 0.000 ; free physical = 8055 ; free virtual = 33877
+INFO: [Common 17-1381] The checkpoint '/home/work1/Works/Hi-Lo-Trigger/hilo_trigger/hilo_trigger.runs/synth_1/PRE_TRIGGER_UTIL_WRAPPER.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file PRE_TRIGGER_UTIL_WRAPPER_utilization_synth.rpt -pb PRE_TRIGGER_UTIL_WRAPPER_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Sun Apr  5 16:01:13 2026...
