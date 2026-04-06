@@ -25,7 +25,7 @@ def main():
     ]
     tb_file = os.path.join(hw_dir, "sim/tb_hilo_trigger.vhd")
     
-    # Validate VHDL files exist before starting a massive run
+    # Validate VHDL files
     for vhdl_file in rtl_files + [tb_file]:
         if not os.path.exists(vhdl_file):
             print(f"[!] CRITICAL: Hardware source file missing: {vhdl_file}")
@@ -36,23 +36,30 @@ def main():
         print(f"[!] CRITICAL: No chunk files found in {data_dir}")
         return
 
-    # Sweep Parameters
-    snr_thresholds = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+    # Calculate True Noise RMS from the first chunk for accurate SNR scaling
+    print("[*] Calculating True Noise RMS from first chunk...")
+    sample_data = np.load(chunk_files[0])
+    noise_rms = float(np.std(sample_data))
+    print(f"[*] Detected Noise RMS: {noise_rms:.6f}")
+
+    # OPTIMIZED: Narrow sweep for point-verification
+    snr_thresholds = [2.0, 3.0, 4.0]
     scale = 64.0 
     
+    # Initialize results with scaled hardware thresholds
     results = {
         str(snr): {
-            "hw_threshold_int": int(snr * scale), 
+            "hw_threshold_int": int(snr * noise_rms * scale), 
             "false_positives": 0, 
             "events_processed": 0
         } for snr in snr_thresholds
     }
 
     for snr in snr_thresholds:
-        hw_thr = int(snr * scale)
-        print(f"\n{'='*50}")
-        print(f"[*] SWEEPING THRESHOLD: SNR {snr} (HW INT: {hw_thr})")
-        print(f"{'='*50}")
+        hw_thr = results[str(snr)]["hw_threshold_int"]
+        print(f"\n{'='*60}")
+        print(f"[*] VERIFYING POINT: SNR {snr} (HW INT: {hw_thr})")
+        print(f"{'='*60}")
         
         for chunk_file in chunk_files:
             chunk_name = os.path.basename(chunk_file)
@@ -61,7 +68,7 @@ def main():
             # Step A: Stream Stimulus to Disk
             generate_stimulus_file(chunk_file, stimulus_txt_path, scale)
             
-            # Step B: Hardware Co-Simulation Execution
+            # Step B: Hardware Co-Simulation Execution via Vivado CLI
             comp_cmd = ["xvhdl", "--2008"] + rtl_files + [tb_file]
             elab_cmd = [
                 "xelab", "-debug", "typical", "-top", "tb_hilo_trigger", 
@@ -80,29 +87,28 @@ def main():
             # Step C: Data Extraction
             if os.path.exists(hw_log_path):
                 with open(hw_log_path, 'r') as f:
-                    lines = f.readlines()
-                    fp_count = sum(1 for line in lines if '1' in line.strip())
+                    fp_count = sum(1 for line in f if '1' in line.strip())
                 
                 results[str(snr)]["false_positives"] += fp_count
                 
-                # Fetch exact event count safely without loading the array into RAM
+                # Fetch exact event count safely using memmap
                 events_in_chunk = np.load(chunk_file, mmap_mode='r').shape[0]
                 results[str(snr)]["events_processed"] += events_in_chunk 
                 
                 os.remove(hw_log_path)
             else:
-                print(f"[!] WARNING: {hw_log_path} missing. Simulation may have failed silently.")
+                print(f"[!] WARNING: {hw_log_path} missing.")
             
-            # Clean up the 100MB text file before the next iteration
+            # Clean up text stimulus to save disk space
             if os.path.exists(stimulus_txt_path):
                 os.remove(stimulus_txt_path)
 
-        # Output JSON after every full dataset sweep to prevent data loss on script crash
+        # Output JSON after every full dataset sweep (Checkpoint)
         with open(output_results_path, 'w') as f:
             json.dump(results, f, indent=4)
-            print(f"[*] SNR {snr} sweep complete. Data checkpoint saved.")
+            print(f"[*] SNR {snr} verification point saved.")
 
-    print(f"\n[*] Pipeline Execution Complete. Final results logged to {output_results_path}")
+    print(f"\n[*] Point Verification Complete. Results logged to {output_results_path}")
 
 if __name__ == "__main__":
     main()
