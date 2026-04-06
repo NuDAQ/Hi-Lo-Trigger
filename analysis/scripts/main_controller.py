@@ -18,9 +18,10 @@ def main():
     
     # Target VHDL Files (Dependency Order is Critical)
     rtl_files = [
-        os.path.join(hw_dir, "rtl/PRE_TRIGGER_pkg.vhd"),
-        os.path.join(hw_dir, "rtl/PRE_TRIGGER_1CH.vhd"),
-        os.path.join(hw_dir, "rtl/PRE_TRIGGER.vhd")
+        os.path.join(hw_dir, "rtl/PRE_TRIGGER_PKG.vhd"),
+        os.path.join(hw_dir, "rtl/Pre_trigger_1ch.vhd"),
+        os.path.join(hw_dir, "rtl/Mult_to_bin.vhd"),
+        os.path.join(hw_dir, "rtl/Pre_trigger.vhd")
     ]
     tb_file = os.path.join(hw_dir, "sim/tb_hilo_trigger.vhd")
     
