@@ -1,5 +1,10 @@
 # Hi-Lo-Trigger
-A Hi-Lo Pre-Trigger for ARIANNA.
+[![SHL-2.1 license](https://img.shields.io/badge/license-SHL--2.1-green)](LICENSE)
+
+## Introduction
+A Hi-Lo Pre-Trigger for ARIANNA. This module is a 4-channel VHDL-based trigger logic designed to identify coincident signal events across a 32-sample window. It utilizes a bipolar thresholding mechanism and configurable temporal stretching to determine event multiplicity.
+
+
 
 
 ## Bender How-To
