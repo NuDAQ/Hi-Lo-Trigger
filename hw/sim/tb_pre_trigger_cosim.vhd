@@ -1,15 +1,18 @@
--- =============================================================================
---  tb_pre_trigger_cosim.vhd
---  Data-Driven Co-Simulation Testbench for PRE_TRIGGER
+-- Copyright 2026 Albert L. Cheung @ University of California, Irvine
+-- SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
 --
---  Reads:  ../../../analysis/PreTrigger/stimulus.txt 
---  Writes: ../../../analysis/PreTrigger/hw_resp_thr_XXX.txt 
+-- Licensed under the Solderpad Hardware License v 2.1 (the “License”); 
+-- you may not use this file except in compliance with the License, or, 
+-- at your option, the Apache License version 2.0. 
+-- You may obtain a copy of the License at
 --
---  Parameters:
---    BIN_THR      = 2 (N=2 Coincidence for 4-channel Hi-Lo)
---    HILO_WINDOW  = 5
---    COINC_WINDOW = 32
--- =============================================================================
+-- https://solderpad.org/licenses/SHL-2.1/
+--
+-- Unless required by applicable law or agreed to in writing, any work 
+-- distributed under the License is distributed on an “AS IS” BASIS, 
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+-- See the License for the specific language governing permissions and 
+-- limitations under the License.
 
 library ieee;
 use ieee.std_logic_1164.all;
