@@ -1,14 +1,14 @@
 package:
   name: hilo-trigger
+  description: "A Hi-Lo pre-trigger module for ARIANNA."
   authors:
-    - "Albert L. Cheung <albert.cheung@cern.ch>"
+    - "Albert <albert.cheung@cern.ch>" # current maintainer
 
 sources:
-  - files:
-      - hw/rtl/PRE_TRIGGER_PKG.vhd     
-      - hw/rtl/Mult_to_bin.vhd
-      - hw/rtl/Pre_trigger_1ch.vhd
-      - hw/rtl/Pre_trigger.vhd
+  - hw/rtl/PRE_TRIGGER_PKG.vhd     
+  - hw/rtl/Mult_to_bin.vhd
+  - hw/rtl/Pre_trigger_1ch.vhd
+  - hw/rtl/Pre_trigger.vhd
 
   - target: simulation
     files:
