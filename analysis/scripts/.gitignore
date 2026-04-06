@@ -5,3 +5,5 @@
 
 !submodule/
 !submodule/**
+
+!far_results.json
