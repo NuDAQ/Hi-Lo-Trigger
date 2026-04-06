@@ -30,6 +30,10 @@ For every individual time bin (0 to 31), the system aggregates the coincidence b
 | **Coincidence Window** | 0 to 32 samples |
 | **Multiplicity** | Configurable threshold (0 to 4) via `BIN_THR` |
 
+## Simulator and Plotting
+
+
+
 ## License
 This project is licensed under the SHL-2.1 License. See the [LICENSE](LICENSE).
 
