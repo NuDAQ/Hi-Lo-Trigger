@@ -33,6 +33,9 @@ For every individual time bin (0 to 31), the system aggregates the coincidence b
 ## Simulator and Plotting
 
 
+### Data Availability
+
+The data for plotting and analysis are publicly accessible. The large-scale thermal noise dataset are hosted on CERN Box [here](https://cernbox.cern.ch/s/KYnLYat7XXM8pvu) with password `thermal123`.
 
 ## License
 This project is licensed under the SHL-2.1 License. See the [LICENSE](LICENSE).
