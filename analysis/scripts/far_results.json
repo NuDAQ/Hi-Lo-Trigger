@@ -1,0 +1,17 @@
+{
+    "2.0": {
+        "hw_threshold_int": 130,
+        "false_positives": 9702142,
+        "events_processed": 2100000
+    },
+    "3.0": {
+        "hw_threshold_int": 196,
+        "false_positives": 0,
+        "events_processed": 0
+    },
+    "4.0": {
+        "hw_threshold_int": 261,
+        "false_positives": 0,
+        "events_processed": 0
+    }
+}
