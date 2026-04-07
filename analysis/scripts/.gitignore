@@ -7,3 +7,5 @@
 !submodule/**
 
 !far_results.json
+
+!*.root
