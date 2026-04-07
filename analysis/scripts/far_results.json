@@ -6,8 +6,8 @@
     },
     "3.0": {
         "hw_threshold_int": 196,
-        "false_positives": 0,
-        "events_processed": 0
+        "false_positives": 37863,
+        "events_processed": 2100000
     },
     "4.0": {
         "hw_threshold_int": 261,
