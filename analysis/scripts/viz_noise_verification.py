@@ -74,36 +74,40 @@ def generate_thermal_verification():
 
     print(f"\n[*] Running bit-accurate Python emulation across FULL {total_py_events} events...")
     
-    # I/O OPTIMIZATION: Load chunk once, process all thresholds, then drop.
+# Inside the chunk loop of viz_noise_verification.py
     for chunk_idx, chunk in enumerate(chunk_files):
         if chunk_idx % 10 == 0:
             print(f"    Processing chunk {chunk_idx}/{len(chunk_files)}...")
             
-        # Hardware Quantization enforced here
-        X_test = np.squeeze(np.load(chunk))
+        X_test = np.squeeze(np.load(chunk)) # Shape: (25000, 4, 32)
         X_int = np.round(X_test * 64.0).astype(np.int32)
         
-        # Extract physical amplitude distribution data
+        # Max amplitude extraction (unchanged)
         max_amps_per_event_hw = np.max(np.abs(X_int), axis=(1, 2))
         max_amps_per_event_rms = (max_amps_per_event_hw / 64.0) / noise_rms
         all_max_amps_rms.extend(max_amps_per_event_rms)
         
-        # Emulate all SNR thresholds for this specific chunk
+        # Flatten into a continuous stream to simulate true physical time (Shape: 800000, 4)
+        X_stream = X_int.transpose(0, 2, 1).reshape(-1, 4)
+        
         for snr in snr_sweep:
             thresh_hw_int = int(snr * noise_rms * 64.0)
             
-            crossed_hi = (X_int > thresh_hw_int)
-            crossed_lo = (X_int < -thresh_hw_int)
+            crossed_hi = (X_stream > thresh_hw_int)
+            crossed_lo = (X_stream < -thresh_hw_int)
             
+            # Continuous sliding windows across event boundaries
             gates_hi = causal_rolling_or(crossed_hi, HILO_WINDOW)
             gates_lo = causal_rolling_or(crossed_lo, HILO_WINDOW)
             
             bipolar_trigger = gates_hi & gates_lo
-            
             coincidence_gates = causal_rolling_or(bipolar_trigger, COINCIDENCE_WINDOW)
             
-            multiplicity = np.sum(coincidence_gates, axis=1)
-            event_triggered = np.any(multiplicity >= BIN_THR, axis=1)
+            stream_multiplicity = np.sum(coincidence_gates, axis=1) # Shape: (800000,)
+            
+            # Reshape back to batches to precisely match the hardware's OR-reduction (PRE_TRIG <= trig32 != 0)
+            batch_multiplicity = stream_multiplicity.reshape(-1, 32)
+            event_triggered = np.any(batch_multiplicity >= BIN_THR, axis=1) # Max 1 trigger per batch
             
             fp_totals[snr] += np.sum(event_triggered)
 

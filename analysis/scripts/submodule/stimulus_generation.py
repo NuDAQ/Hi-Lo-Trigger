@@ -5,7 +5,6 @@ def generate_stimulus_file(input_npy_path, output_txt_path, scale_factor=64.0):
     if not os.path.exists(input_npy_path):
         raise FileNotFoundError(f"Cannot find data file: {input_npy_path}")
 
-    # Load only the 102MB chunk
     data = np.load(input_npy_path)
     data = np.squeeze(data) 
     
@@ -16,7 +15,6 @@ def generate_stimulus_file(input_npy_path, output_txt_path, scale_factor=64.0):
     samples_per_clock = 32
     clocks_per_event = samples // samples_per_clock
     
-    # Stream directly to disk
     with open(output_txt_path, 'w') as f:
         for ev in range(events):
             for clk in range(clocks_per_event):
@@ -27,3 +25,5 @@ def generate_stimulus_file(input_npy_path, output_txt_path, scale_factor=64.0):
                 flat_chunk = chunk.flatten()
                 
                 f.write(" ".join(map(str, flat_chunk)) + "\n")
+                
+    return clocks_per_event

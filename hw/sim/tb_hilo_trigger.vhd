@@ -14,6 +14,8 @@
 -- See the License for the specific language governing permissions and 
 -- limitations under the License.
 
+-- Copyright 2026 Albert L. Cheung @ University of California, Irvine
+-- SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -23,7 +25,9 @@ use work.pre_trigger_pkg.all;
 
 entity tb_hilo_trigger is
     generic (
-        THRESHOLD : integer := 100 
+        THRESHOLD : integer := 100;
+        CLOCKS_PER_EVENT : integer := 1;
+        ENABLE_RESET_ISOLATION : boolean := false 
     );
 end entity;
 
@@ -32,16 +36,18 @@ architecture sim of tb_hilo_trigger is
     signal CLK          : std_logic := '0';
     signal RESET        : std_logic := '1';
     signal DATA_STR     : std_logic := '0';
+    signal DATA_STR_D1  : std_logic := '0';
+    signal DATA_STR_D2  : std_logic := '0';
     signal ADC_DATA4    : adc_data4_type := (others => (others => (others => '0')));
-    
     signal THRESH_SIG   : std_logic_vector(11 downto 0);
     signal HILO_WINDOW  : std_logic_vector( 4 downto 0);
     signal COINC_WINDOW : std_logic_vector( 5 downto 0);
     signal BIN_THR      : std_logic_vector( 3 downto 0);
     signal PRE_TRIG     : std_logic;
+    
+    signal END_SIM      : boolean := false;
 
     constant CLK_PERIOD : time := 10 ns;
-
 begin
 
     THRESH_SIG <= std_logic_vector(to_signed(THRESHOLD, 12));
@@ -61,30 +67,38 @@ begin
 
     CLK <= not CLK after CLK_PERIOD / 2;
 
+    -- Latency Tracking
+    process(CLK)
+    begin
+        if rising_edge(CLK) then
+            DATA_STR_D1 <= DATA_STR;
+            DATA_STR_D2 <= DATA_STR_D1;
+        end if;
+    end process;
+
+    -- Stimulus Driver
     stimulus : process
         file stim_file      : text;
-        file resp_file      : text;
         variable in_line    : line;
-        variable out_line   : line;
         variable val        : integer;
         variable batch      : adc_data4_type;
+        variable clk_count  : integer := 0;
     begin
-        HILO_WINDOW  <= "00101";  -- 5 samples
-        COINC_WINDOW <= "100000"; -- 32 samples
-        BIN_THR      <= x"2";     -- N=2 Coincidence 
+        HILO_WINDOW  <= "00101";
+        COINC_WINDOW <= "100000";
+        BIN_THR      <= x"2";
+        
         RESET <= '1';
         DATA_STR <= '0';
-        wait until rising_edge(CLK);
+        wait for CLK_PERIOD * 3;
         wait until rising_edge(CLK);
         RESET <= '0';
         wait until rising_edge(CLK);
 
         file_open(stim_file, "stimulus.txt", read_mode);
-        file_open(resp_file, "hw_resp.txt", write_mode);
-
+        
         while not endfile(stim_file) loop
             readline(stim_file, in_line);
-            
             for ch in 0 to 3 loop
                 for samp in 0 to 31 loop
                     read(in_line, val);
@@ -94,31 +108,49 @@ begin
 
             ADC_DATA4 <= batch;
             DATA_STR  <= '1';
-
             wait until rising_edge(CLK);
             
-            if PRE_TRIG = '1' then
-                write(out_line, string'("1"));
-            else
-                write(out_line, string'("0"));
+            clk_count := clk_count + 1;
+            
+            if ENABLE_RESET_ISOLATION and (clk_count = CLOCKS_PER_EVENT) then
+                DATA_STR <= '0';
+                RESET <= '1';
+                wait until rising_edge(CLK);
+                RESET <= '0';
+                clk_count := 0;
             end if;
-            writeline(resp_file, out_line);
+            
         end loop;
 
         DATA_STR <= '0';
-        for j in 1 to 2 loop
-            wait until rising_edge(CLK);
-            if PRE_TRIG = '1' then
-                write(out_line, string'("1"));
-            else
-                write(out_line, string'("0"));
-            end if;
-            writeline(resp_file, out_line);
-        end loop;
-
         file_close(stim_file);
-        file_close(resp_file);
+        
+        -- Flush pipeline
+        wait for CLK_PERIOD * 5;
+        END_SIM <= true;
+        wait;
+    end process;
 
+    -- Output Monitor
+    monitor : process
+        file resp_file    : text;
+        variable out_line : line;
+    begin
+        file_open(resp_file, "hw_resp.txt", write_mode);
+        
+        while not END_SIM loop
+            wait until rising_edge(CLK);
+            if DATA_STR_D2 = '1' then
+                if PRE_TRIG = '1' then
+                    write(out_line, string'("1"));
+                else
+                    write(out_line, string'("0"));
+                end if;
+                writeline(resp_file, out_line);
+            end if;
+        end loop;
+        
+        file_close(resp_file);
         std.env.finish;
     end process;
 

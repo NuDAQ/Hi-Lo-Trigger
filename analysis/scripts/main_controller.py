@@ -11,12 +11,12 @@ def main():
     data_dir = os.path.abspath(os.path.join(base_dir, "../data/thermal"))
     hw_dir   = os.path.abspath(os.path.join(base_dir, "../../hw"))
     
-    # Working files (generated in analysis/scripts/)
+    # Working files
     stimulus_txt_path = os.path.join(base_dir, "stimulus.txt")
     hw_log_path = os.path.join(base_dir, "hw_resp.txt")
     output_results_path = os.path.join(base_dir, "far_results.json")
     
-    # Target VHDL Files (Dependency Order is Critical)
+    # Target VHDL Files
     rtl_files = [
         os.path.join(hw_dir, "rtl/PRE_TRIGGER_PKG.vhd"),
         os.path.join(hw_dir, "rtl/Pre_trigger_1ch.vhd"),
@@ -36,17 +36,14 @@ def main():
         print(f"[!] CRITICAL: No chunk files found in {data_dir}")
         return
 
-    # Calculate True Noise RMS from the first chunk for accurate SNR scaling
     print("[*] Calculating True Noise RMS from first chunk...")
     sample_data = np.load(chunk_files[0])
     noise_rms = float(np.std(sample_data))
     print(f"[*] Detected Noise RMS: {noise_rms:.6f}")
 
-    # OPTIMIZED: Narrow sweep for point-verification
     snr_thresholds = [2.0, 3.0, 4.0]
     scale = 64.0 
     
-    # Initialize results with scaled hardware thresholds
     results = {
         str(snr): {
             "hw_threshold_int": int(snr * noise_rms * scale), 
@@ -65,14 +62,16 @@ def main():
             chunk_name = os.path.basename(chunk_file)
             print(f"[*] Processing: {chunk_name}")
             
-            # Step A: Stream Stimulus to Disk
-            generate_stimulus_file(chunk_file, stimulus_txt_path, scale)
+            # Step A: Stream Stimulus and Capture Length Metric
+            clocks_per_event = generate_stimulus_file(chunk_file, stimulus_txt_path, scale)
             
-            # Step B: Hardware Co-Simulation Execution via Vivado CLI
+            # Step B: Hardware Co-Simulation Execution
             comp_cmd = ["xvhdl", "--2008"] + rtl_files + [tb_file]
             elab_cmd = [
                 "xelab", "-debug", "typical", "-top", "tb_hilo_trigger", 
-                "-snapshot", "tb_snap", "-generic_top", f"THRESHOLD={hw_thr}"
+                "-snapshot", "tb_snap", 
+                "-generic_top", f"THRESHOLD={hw_thr}",
+                "-generic_top", f"CLOCKS_PER_EVENT={clocks_per_event}"
             ]
             sim_cmd = ["xsim", "tb_snap", "-R"]
             
@@ -84,26 +83,26 @@ def main():
                 print(f"[!] CRITICAL: Vivado toolchain failed during {chunk_name}. {e}")
                 return
             
-            # Step C: Data Extraction
+            # Step C: Data Extraction 
             if os.path.exists(hw_log_path):
                 with open(hw_log_path, 'r') as f:
-                    fp_count = sum(1 for line in f if '1' in line.strip())
+                    lines = [l.strip() for l in f.readlines() if l.strip() in ['0', '1']]
+                
+                fp_count = 0
+                
+                # Emulate np.any() - max 1 trigger per physical event definition
+                for ev_idx in range(0, len(lines), clocks_per_event):
+                    event_batches = lines[ev_idx : ev_idx + clocks_per_event]
+                    if any(line == '1' for line in event_batches):
+                        fp_count += 1
                 
                 results[str(snr)]["false_positives"] += fp_count
                 
-                # Fetch exact event count safely using memmap
                 events_in_chunk = np.load(chunk_file, mmap_mode='r').shape[0]
                 results[str(snr)]["events_processed"] += events_in_chunk 
                 
                 os.remove(hw_log_path)
-            else:
-                print(f"[!] WARNING: {hw_log_path} missing.")
-            
-            # Clean up text stimulus to save disk space
-            if os.path.exists(stimulus_txt_path):
-                os.remove(stimulus_txt_path)
 
-        # Output JSON after every full dataset sweep (Checkpoint)
         with open(output_results_path, 'w') as f:
             json.dump(results, f, indent=4)
             print(f"[*] SNR {snr} verification point saved.")
