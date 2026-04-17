@@ -9,3 +9,5 @@
 !far_results.json
 
 !*.root
+
+!trigger_capture_snr3.0_thermal_chunk_****_rtl_emulation.pdf
