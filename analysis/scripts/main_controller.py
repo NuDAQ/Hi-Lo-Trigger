@@ -49,7 +49,7 @@ def main():
     sample_data = np.load(chunk_files[0])
     noise_rms = float(np.std(sample_data))
     
-    snr_thresholds = [4.0]
+    snr_thresholds = [3.0]
     scale = 64.0 
     
     results = {
