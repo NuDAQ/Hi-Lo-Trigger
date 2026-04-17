@@ -10,9 +10,18 @@ CAPTURE_WAVEFORM_ON_TRIGGER = True
 # ---------------------
 
 def main():
+    # base_dir is analysis/scripts/
     base_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Input data directory: analysis/data/thermal/
     data_dir = os.path.abspath(os.path.join(base_dir, "../data/thermal"))
+    
+    # Hardware directory (assuming it's parallel to the analysis root)
     hw_dir   = os.path.abspath(os.path.join(base_dir, "../../hw"))
+    
+    # CORRECTED PATH: analysis/data/false_triggered_events/
+    capture_dir = os.path.abspath(os.path.join(base_dir, "../data/false_triggered_events"))
+    os.makedirs(capture_dir, exist_ok=True)
     
     stimulus_txt_path = os.path.join(base_dir, "stimulus.txt")
     hw_log_path = os.path.join(base_dir, "hw_resp.txt")
@@ -40,7 +49,7 @@ def main():
     sample_data = np.load(chunk_files[0])
     noise_rms = float(np.std(sample_data))
     
-    snr_thresholds = [3.0]
+    snr_thresholds = [4.0]
     scale = 64.0 
     
     results = {
@@ -57,24 +66,21 @@ def main():
         print(f"[*] VERIFYING POINT: SNR {snr} (HW INT: {hw_thr})")
         print(f"{'='*60}")
         
-        triggered_global = False
-        
         for chunk_file in chunk_files:
-            if triggered_global and CAPTURE_WAVEFORM_ON_TRIGGER:
-                print("[*] Halting further processing due to captured trigger.")
-                break
-                
             chunk_name = os.path.basename(chunk_file)
             print(f"[*] Processing: {chunk_name}")
             
             clocks_per_event = generate_stimulus_file(chunk_file, stimulus_txt_path, scale)
             
             comp_cmd = ["xvhdl", "--2008"] + rtl_files + [tb_file]
+            
+            # CORRECTED LOGIC: Passed ENABLE_RESET_ISOLATION=true to hardware
             elab_cmd = [
                 "xelab", "-debug", "typical", "-top", "tb_hilo_trigger", 
                 "-snapshot", "tb_snap", 
                 "-generic_top", f"THRESHOLD={hw_thr}",
-                "-generic_top", f"CLOCKS_PER_EVENT={clocks_per_event}"
+                "-generic_top", f"CLOCKS_PER_EVENT={clocks_per_event}",
+                "-generic_top", "ENABLE_RESET_ISOLATION=true"
             ]
             sim_cmd = ["xsim", "tb_snap", "-R"]
             
@@ -90,46 +96,30 @@ def main():
                 with open(hw_log_path, 'r') as f:
                     lines = [l.strip() for l in f.readlines() if l.strip() in ['0', '1']]
                 
-                if CAPTURE_WAVEFORM_ON_TRIGGER:
-                    for idx, val in enumerate(lines):
-                        if val == '1':
-                            print(f"[!] Trigger detected at absolute batch index {idx}.")
-                            
-                            # Load raw array and reshape to continuous stream
-                            raw_data = np.load(chunk_file)
-                            raw_data = np.squeeze(raw_data) # shape: (events, channels, samples_per_event)
-                            
-                            channels = raw_data.shape[1]
-                            
-                            # Transpose to (channels, events, samples_per_event) then flatten events
-                            # Resulting shape: (channels, total_samples_in_chunk)
-                            continuous_stream = np.transpose(raw_data, (1, 0, 2)).reshape(channels, -1)
-                            total_batches = continuous_stream.shape[1] // 32
-                            
-                            # Global batch slicing logic
-                            start_batch = max(0, idx - 2)
-                            end_batch = min(total_batches, idx + 3)
-                            
-                            start_samp = start_batch * 32
-                            end_samp = end_batch * 32
-                            
-                            waveform_capture = continuous_stream[:, start_samp:end_samp]
-                            
-                            capture_path = os.path.join(base_dir, f"trigger_capture_snr{snr}_{chunk_name}")
-                            np.save(capture_path, waveform_capture)
-                            print(f"[*] Extracted {(end_samp - start_samp)//32} contiguous batches to {capture_path}.npy")
-                            
-                            results[str(snr)]["false_positives"] += 1
-                            triggered_global = True
-                            break # Break log parsing
-                else:
-                    fp_count = 0
-                    for ev_idx in range(0, len(lines), clocks_per_event):
-                        event_batches = lines[ev_idx : ev_idx + clocks_per_event]
-                        if any(line == '1' for line in event_batches):
-                            fp_count += 1
+                fp_count = 0
+                raw_data = None 
+                
+                # Iterate by strict event boundaries
+                for ev_idx in range(0, len(lines), clocks_per_event):
+                    event_batches = lines[ev_idx : ev_idx + clocks_per_event]
                     
-                    results[str(snr)]["false_positives"] += fp_count
+                    if any(line == '1' for line in event_batches):
+                        fp_count += 1
+                        
+                        if CAPTURE_WAVEFORM_ON_TRIGGER:
+                            if raw_data is None:
+                                raw_data = np.load(chunk_file)
+                                raw_data = np.squeeze(raw_data)
+                            
+                            event_number = ev_idx // clocks_per_event
+                            waveform_capture = raw_data[event_number, :, :]
+                            
+                            # Utilizing the corrected path
+                            capture_path = os.path.join(capture_dir, f"trigger_capture_snr{snr}_{chunk_name}_ev{event_number}")
+                            np.save(capture_path, waveform_capture)
+                            print(f"[!] Trigger detected. Extracted event {event_number} to {capture_path}.npy")
+                
+                results[str(snr)]["false_positives"] += fp_count
                 
                 events_in_chunk = np.load(chunk_file, mmap_mode='r').shape[0]
                 results[str(snr)]["events_processed"] += events_in_chunk 
@@ -144,3 +134,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
