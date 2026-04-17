@@ -85,7 +85,7 @@ begin
         variable clk_count  : integer := 0;
     begin
         HILO_WINDOW  <= "00101";
-        COINC_WINDOW <= "100000";
+        COINC_WINDOW <= "011110";
         BIN_THR      <= x"2";
         
         RESET <= '1';
