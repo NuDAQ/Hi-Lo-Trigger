@@ -1,15 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.backends.backend_pdf as pdf_backend
 import os
+import glob
+import argparse
 
-def plot_rtl_emulation(npy_path, output_pdf_path, global_sigma=1.020833, snr_target=3.0):
-    if not os.path.exists(npy_path):
-        print(f"[!] Error: File not found at {npy_path}")
-        return
 
+def _build_figure(npy_path, snr_target=3.0, global_sigma=1.020833, page_label=None):
+    """Build and return a matplotlib figure for one event file."""
     data = np.load(npy_path)
     channels, samples = data.shape
-    
+
     # 1. Replicate exact hardware quantization threshold
     scale_factor = 64.0
     hw_thr_int = int(snr_target * global_sigma * scale_factor)
@@ -55,29 +56,27 @@ def plot_rtl_emulation(npy_path, output_pdf_path, global_sigma=1.020833, snr_tar
 
     for c in range(channels):
         ax = axes[c]
-        
-        # Shade regions where the Coincidence Gate is held active
+
         ax.fill_between(time_axis, -5, 5, where=coinc[c], color='green', alpha=0.15, label='Coinc Gate Active')
-        
-        # Mark threshold cross points
+
         hi_idx = np.where(v_ot_hi[c])[0]
         lo_idx = np.where(v_ot_lo[c])[0]
         if len(hi_idx) > 0:
             ax.scatter(hi_idx, data_sigma[c, hi_idx], color='red', marker='^', zorder=3, s=30)
         if len(lo_idx) > 0:
             ax.scatter(lo_idx, data_sigma[c, lo_idx], color='blue', marker='v', zorder=3, s=30)
-            
+
         ax.axhline(y=effective_sigma_thr, color='purple', linestyle='-', linewidth=1.2, alpha=0.8)
         ax.axhline(y=-effective_sigma_thr, color='purple', linestyle='-', linewidth=1.2, alpha=0.8)
-        
+
         ax.plot(time_axis, data_sigma[c, :], color='black', linewidth=1.0, zorder=2)
         ax.set_ylabel(f'Ch {c} ($\\sigma$)')
         ax.set_ylim(-4.5, 4.5)
         ax.grid(True, axis='y', linestyle='--', alpha=0.5)
-        
+
         for boundary in batch_boundaries:
             ax.axvline(x=boundary, color='blue', linestyle=':', linewidth=1.0, alpha=0.6)
-            
+
         if c == 0:
             ax.legend(loc='upper right', fontsize='8')
 
@@ -86,31 +85,85 @@ def plot_rtl_emulation(npy_path, output_pdf_path, global_sigma=1.020833, snr_tar
     ax_mult.plot(time_axis, multiplicity, color='darkorange', linewidth=2.0, drawstyle='steps-post')
     ax_mult.fill_between(time_axis, 0, multiplicity, color='orange', alpha=0.3, step='post')
     ax_mult.axhline(y=BIN_THR, color='red', linestyle='--', linewidth=1.5, label=f'BIN_THR = {BIN_THR}')
-    
-    # Identify and mark true trigger instances
+
     trigger_points = np.where(multiplicity >= BIN_THR)[0]
     if len(trigger_points) > 0:
         ax_mult.scatter(trigger_points, multiplicity[trigger_points], color='red', marker='x', s=50, zorder=3)
         for pt in trigger_points:
             ax_mult.axvline(x=pt, color='red', linestyle='-', alpha=0.3, linewidth=1.0)
-            
+
     ax_mult.set_ylabel('Multiplicity')
     ax_mult.set_yticks(range(channels + 1))
     ax_mult.set_ylim(0, channels + 0.5)
     ax_mult.grid(True, axis='y', linestyle='--', alpha=0.5)
     ax_mult.legend(loc='upper left', fontsize='8')
     ax_mult.set_xlabel('Sample Index (Vertical blue lines = 32-sample batch boundaries)')
-    
+
     for boundary in batch_boundaries:
         ax_mult.axvline(x=boundary, color='blue', linestyle=':', linewidth=1.0, alpha=0.6)
 
-    plt.suptitle(f'RTL Boolean Emulation & Trigger Analysis\nFile: {os.path.basename(npy_path)}', fontsize=12)
+    title = f'RTL Boolean Emulation & Trigger Analysis\nFile: {os.path.basename(npy_path)}'
+    if page_label is not None:
+        title = f'{page_label}\n{title}'
+    plt.suptitle(title, fontsize=12)
     plt.tight_layout()
-    plt.savefig(output_pdf_path, format='pdf', bbox_inches='tight')
-    plt.close()
+    return fig
+
+
+def plot_rtl_emulation(npy_path, output_pdf_path, global_sigma=1.020833, snr_target=3.0):
+    if not os.path.exists(npy_path):
+        print(f"[!] Error: File not found at {npy_path}")
+        return
+
+    fig = _build_figure(npy_path, snr_target=snr_target, global_sigma=global_sigma)
+    fig.savefig(output_pdf_path, format='pdf', bbox_inches='tight')
+    plt.close(fig)
     print(f"[*] Saved precise RTL emulation plot to: {output_pdf_path}")
 
+
+def plot_false_triggers_batch(snr, data_dir, output_pdf_path, global_sigma=1.020833):
+    pattern = os.path.join(data_dir, f"trigger_capture_snr{snr}_thermal_chunk_*.npy_ev*.npy")
+    files = sorted(glob.glob(pattern))
+
+    if not files:
+        print(f"[!] No files found matching: {pattern}")
+        return
+
+    total = len(files)
+    print(f"[*] Found {total} event file(s) matching SNR={snr}")
+
+    with pdf_backend.PdfPages(output_pdf_path) as pages:
+        for i, fpath in enumerate(files):
+            fname = os.path.basename(fpath)
+            # Parse chunk and event numbers from filename for the page label
+            # Pattern: trigger_capture_snr{snr}_thermal_chunk_{chunk}.npy_ev{ev}.npy
+            try:
+                chunk_part = fname.split("_chunk_")[1].split(".npy_ev")[0]
+                ev_part = fname.split(".npy_ev")[1].replace(".npy", "")
+                page_label = f"Event {i + 1} / {total}  |  Chunk {chunk_part}  |  Ev {ev_part}"
+            except IndexError:
+                page_label = f"Event {i + 1} / {total}"
+
+            print(f"[*] Processing {i + 1}/{total}: {fname}")
+            fig = _build_figure(fpath, snr_target=snr, global_sigma=global_sigma, page_label=page_label)
+            pages.savefig(fig, bbox_inches='tight')
+            plt.close(fig)
+
+    print(f"[*] Saved {total} event(s) to: {output_pdf_path}")
+
+
 if __name__ == "__main__":
-    input_file = "trigger_capture_snr3.0_thermal_chunk_0000.npy"
-    output_file = "trigger_capture_snr3.0_thermal_chunk_0000_rtl_emulation.pdf"
-    plot_rtl_emulation(input_file, output_file)
+    parser = argparse.ArgumentParser(description="RTL emulation plotter")
+    parser.add_argument("--snr", type=float, default=3.0, help="SNR target (default: 3.0)")
+    args = parser.parse_args()
+
+    if args.snr == 4.0:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        data_dir = os.path.join(script_dir, "..", "data", "false_triggered_events")
+        output_pdf = os.path.join(script_dir, "..", "data", "false_triggered_events",
+                                  f"false_triggers_snr{args.snr}_batch.pdf")
+        plot_false_triggers_batch(snr=4.0, data_dir=data_dir, output_pdf_path=output_pdf)
+    else:
+        input_file = f"trigger_capture_snr{args.snr}_thermal_chunk_0000.npy"
+        output_file = f"trigger_capture_snr{args.snr}_thermal_chunk_0000_rtl_emulation.pdf"
+        plot_rtl_emulation(input_file, output_file, snr_target=args.snr)
