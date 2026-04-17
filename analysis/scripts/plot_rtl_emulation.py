@@ -121,22 +121,36 @@ def plot_rtl_emulation(npy_path, output_pdf_path, global_sigma=1.020833, snr_tar
     print(f"[*] Saved precise RTL emulation plot to: {output_pdf_path}")
 
 
-def plot_false_triggers_batch(snr, data_dir, output_pdf_path, global_sigma=1.020833):
+def _sort_key(fpath):
+    """Sort by chunk number then event number, both parsed as integers."""
+    fname = os.path.basename(fpath)
+    try:
+        chunk_str = fname.split("_chunk_")[1].split(".npy_ev")[0]
+        ev_str = fname.split(".npy_ev")[1].replace(".npy", "")
+        return (int(chunk_str), int(ev_str))
+    except (IndexError, ValueError):
+        return (0, 0)
+
+
+def plot_false_triggers_batch(snr, data_dir, output_pdf_path, global_sigma=1.020833, max_events=None):
     pattern = os.path.join(data_dir, f"trigger_capture_snr{snr}_thermal_chunk_*.npy_ev*.npy")
-    files = sorted(glob.glob(pattern))
+    files = sorted(glob.glob(pattern), key=_sort_key)
 
     if not files:
         print(f"[!] No files found matching: {pattern}")
         return
 
-    total = len(files)
-    print(f"[*] Found {total} event file(s) matching SNR={snr}")
+    total_found = len(files)
+    if max_events is not None and total_found > max_events:
+        print(f"[*] Found {total_found} event file(s), limiting to first {max_events}")
+        files = files[:max_events]
+    else:
+        print(f"[*] Found {total_found} event file(s) matching SNR={snr}")
 
+    total = len(files)
     with pdf_backend.PdfPages(output_pdf_path) as pages:
         for i, fpath in enumerate(files):
             fname = os.path.basename(fpath)
-            # Parse chunk and event numbers from filename for the page label
-            # Pattern: trigger_capture_snr{snr}_thermal_chunk_{chunk}.npy_ev{ev}.npy
             try:
                 chunk_part = fname.split("_chunk_")[1].split(".npy_ev")[0]
                 ev_part = fname.split(".npy_ev")[1].replace(".npy", "")
@@ -155,15 +169,12 @@ def plot_false_triggers_batch(snr, data_dir, output_pdf_path, global_sigma=1.020
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="RTL emulation plotter")
     parser.add_argument("--snr", type=float, default=3.0, help="SNR target (default: 3.0)")
+    parser.add_argument("--max-events", type=int, default=100,
+                        help="Max number of events to plot (default: 100, 0 = no limit)")
     args = parser.parse_args()
 
-    if args.snr == 4.0:
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        data_dir = os.path.join(script_dir, "..", "data", "false_triggered_events")
-        output_pdf = os.path.join(script_dir, "..", "data", "false_triggered_events",
-                                  f"false_triggers_snr{args.snr}_batch.pdf")
-        plot_false_triggers_batch(snr=4.0, data_dir=data_dir, output_pdf_path=output_pdf)
-    else:
-        input_file = f"trigger_capture_snr{args.snr}_thermal_chunk_0000.npy"
-        output_file = f"trigger_capture_snr{args.snr}_thermal_chunk_0000_rtl_emulation.pdf"
-        plot_rtl_emulation(input_file, output_file, snr_target=args.snr)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, "..", "data", "false_triggered_events")
+    output_pdf = os.path.join(data_dir, f"false_triggers_snr{args.snr}_batch.pdf")
+    max_ev = args.max_events if args.max_events > 0 else None
+    plot_false_triggers_batch(snr=args.snr, data_dir=data_dir, output_pdf_path=output_pdf, max_events=max_ev)
