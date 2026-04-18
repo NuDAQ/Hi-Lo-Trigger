@@ -111,7 +111,7 @@ def main(mode=None):
                     if any(line == '1' for line in event_batches):
                         fp_count += 1
                         
-                        if CAPTURE_WAVEFORM_ON_TRIGGER and mode != "test1":
+                        if CAPTURE_WAVEFORM_ON_TRIGGER:
                             if raw_data is None:
                                 raw_data = np.load(chunk_file)
                                 raw_data = np.squeeze(raw_data)
@@ -120,7 +120,7 @@ def main(mode=None):
                             waveform_capture = raw_data[event_number, :, :]
                             
                             # Utilizing the corrected path
-                            capture_path = os.path.join(capture_dir, f"trigger_capture_snr{snr}_{chunk_name}_ev{event_number}")
+                            capture_path = os.path.join(capture_dir, f"trigger_capture_snr{snr}bin1_{chunk_name}_ev{event_number}")
                             np.save(capture_path, waveform_capture)
                             print(f"[!] Trigger detected. Extracted event {event_number} to {capture_path}.npy")
                 

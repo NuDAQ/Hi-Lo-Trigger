@@ -4,6 +4,7 @@ import matplotlib.backends.backend_pdf as pdf_backend
 import os
 import glob
 import argparse
+import re
 
 
 def _build_figure(npy_path, snr_target=3.0, global_sigma=1.020833, page_label=None):
@@ -159,7 +160,8 @@ def plot_false_triggers_batch(snr, data_dir, output_pdf_path, global_sigma=1.020
                 page_label = f"Event {i + 1} / {total}"
 
             print(f"[*] Processing {i + 1}/{total}: {fname}")
-            fig = _build_figure(fpath, snr_target=snr, global_sigma=global_sigma, page_label=page_label)
+            snr_float = float(re.match(r'[\d.]+', str(snr)).group())
+            fig = _build_figure(fpath, snr_target=snr_float, global_sigma=global_sigma, page_label=page_label)
             pages.savefig(fig, bbox_inches='tight')
             plt.close(fig)
 
@@ -168,7 +170,7 @@ def plot_false_triggers_batch(snr, data_dir, output_pdf_path, global_sigma=1.020
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="RTL emulation plotter")
-    parser.add_argument("--snr", type=float, default=3.0, help="SNR target (default: 3.0)")
+    parser.add_argument("--snr", type=str, default="3.0", help="SNR tag, e.g. 3.0bin1")
     parser.add_argument("--max-events", type=int, default=100,
                         help="Max number of events to plot (default: 100, 0 = no limit)")
     args = parser.parse_args()

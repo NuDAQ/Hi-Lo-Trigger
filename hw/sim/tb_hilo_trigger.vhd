@@ -86,7 +86,7 @@ begin
     begin
         HILO_WINDOW  <= "00101";
         COINC_WINDOW <= "011110";
-        BIN_THR      <= x"2";
+        BIN_THR      <= x"1";
         
         RESET <= '1';
         DATA_STR <= '0';
