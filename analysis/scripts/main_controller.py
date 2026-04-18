@@ -2,6 +2,7 @@ import os
 import glob
 import subprocess
 import json
+import argparse
 import numpy as np
 from submodule.stimulus_generation import generate_stimulus_file
 
@@ -9,7 +10,7 @@ from submodule.stimulus_generation import generate_stimulus_file
 CAPTURE_WAVEFORM_ON_TRIGGER = True
 # ---------------------
 
-def main():
+def main(mode=None):
     # base_dir is analysis/scripts/
     base_dir = os.path.dirname(os.path.abspath(__file__))
     
@@ -44,6 +45,10 @@ def main():
     if not chunk_files:
         print(f"[!] CRITICAL: No chunk files found in {data_dir}")
         return
+
+    if mode == "test1":
+        chunk_files = chunk_files[:1]
+        print(f"[*] test1 mode: only processing {os.path.basename(chunk_files[0])}")
 
     print("[*] Calculating True Noise RMS from first chunk...")
     sample_data = np.load(chunk_files[0])
@@ -106,7 +111,7 @@ def main():
                     if any(line == '1' for line in event_batches):
                         fp_count += 1
                         
-                        if CAPTURE_WAVEFORM_ON_TRIGGER:
+                        if CAPTURE_WAVEFORM_ON_TRIGGER and mode != "test1":
                             if raw_data is None:
                                 raw_data = np.load(chunk_file)
                                 raw_data = np.squeeze(raw_data)
@@ -133,5 +138,8 @@ def main():
     print(f"\n[*] Point Verification Complete. Results logged to {output_results_path}")
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Hi-Lo Trigger FAR controller")
+    parser.add_argument("mode", nargs="?", default=None, help="Run mode (e.g. test1)")
+    args = parser.parse_args()
+    main(mode=args.mode)
     
