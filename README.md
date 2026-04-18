@@ -6,6 +6,8 @@ A Hi-Lo Pre-Trigger for ARIANNA, a neutrino experiment. This is a submodule for 
 
 ### RTL Source Files
 
+The rtl files are under `hw/rtl/`.
+
 | File | Entity | Description |
 | :--- | :--- | :--- |
 | `PRE_TRIGGER_PKG.vhd` | — | Shared type package (`adc_data4_type`, `gate4_type`, `mult4x32_type`, `carry4_type`, etc.) |
