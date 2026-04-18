@@ -1,0 +1,15 @@
+
+*
+!.gitignore
+!*.py
+
+!submodule/
+!submodule/**
+
+!far_results.json
+
+!far_results_*.json
+
+!*.root
+
+!trigger_capture_snr3.0_thermal_chunk_****_rtl_emulation.pdf
