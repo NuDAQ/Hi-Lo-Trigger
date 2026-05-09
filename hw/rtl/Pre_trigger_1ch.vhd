@@ -25,10 +25,10 @@ port (
     CLK         : in  std_logic;
     RESET       : in  std_logic;
     DATA_STR    : in  std_logic;
-    ADC_DATA    : in  adc_data_type;              -- sample 31 is the newest
+    ADC_DATA    : in  adc_data_type;              -- sample N_SAMPLES-1 is the newest
     THRESH      : in  std_logic_vector(11 downto 0);
     HILO_WINDOW : in  std_logic_vector( 4 downto 0);
-    GATE        : out std_logic_vector(0 to 31)
+    GATE        : out std_logic_vector(0 to N_SAMPLES-1)
 );
 end PRE_TRIGGER_1CH;
 
@@ -40,10 +40,10 @@ architecture behav of PRE_TRIGGER_1CH is
 begin
 
     process(CLK, RESET)
-        variable v_ot_hi       : std_logic_vector(0 to 31);
-        variable v_ot_lo       : std_logic_vector(0 to 31);
-        variable v_gate_hi     : std_logic_vector(0 to 31);
-        variable v_gate_lo     : std_logic_vector(0 to 31);
+        variable v_ot_hi       : std_logic_vector(0 to N_SAMPLES-1);
+        variable v_ot_lo       : std_logic_vector(0 to N_SAMPLES-1);
+        variable v_gate_hi     : std_logic_vector(0 to N_SAMPLES-1);
+        variable v_gate_lo     : std_logic_vector(0 to N_SAMPLES-1);
         variable carry_hi_next : unsigned(7 downto 0);
         variable carry_lo_next : unsigned(7 downto 0);
         variable adc_s         : signed(11 downto 0);
@@ -52,8 +52,8 @@ begin
         variable win_int       : integer range 0 to 255;
         variable carry_hi_int  : integer range 0 to 255;
         variable carry_lo_int  : integer range 0 to 255;
-        variable last_hi_k     : integer range 0 to 31;
-        variable last_lo_k     : integer range 0 to 31;
+        variable last_hi_k     : integer range 0 to N_SAMPLES-1;
+        variable last_lo_k     : integer range 0 to N_SAMPLES-1;
         variable found_hi      : std_logic;
         variable found_lo      : std_logic;
     begin
@@ -78,7 +78,7 @@ begin
                 carry_hi_int := to_integer(carry_count_hi_d); -- value from prev batch
                 carry_lo_int := to_integer(carry_count_lo_d);
 
-                for i in 0 to 31 loop
+                for i in 0 to N_SAMPLES-1 loop
                     adc_s := signed(ADC_DATA(i));
                     if adc_s > thresh_pos then
                         v_ot_hi(i) := '1';
@@ -95,13 +95,13 @@ begin
                 v_gate_hi := (others => '0');
                 v_gate_lo := (others => '0');
 
-                for i in 0 to 31 loop
+                for i in 0 to N_SAMPLES-1 loop
                     -- (a) Cross-batch carry from the previous batch
                     if i < carry_hi_int then v_gate_hi(i) := '1'; end if;
                     if i < carry_lo_int then v_gate_lo(i) := '1'; end if;
 
                     -- (b) Within-batch sliding-window OR
-                    for k in 0 to 31 loop
+                    for k in 0 to N_SAMPLES-1 loop
                         if k <= i and (i - k) < win_int then
                             if v_ot_hi(k) = '1' then v_gate_hi(i) := '1'; end if;
                             if v_ot_lo(k) = '1' then v_gate_lo(i) := '1'; end if;
@@ -112,19 +112,19 @@ begin
                 last_hi_k := 0;  last_lo_k := 0;
                 found_hi  := '0'; found_lo := '0';
 
-                for k in 0 to 31 loop
+                for k in 0 to N_SAMPLES-1 loop
                     if v_ot_hi(k) = '1' then last_hi_k := k; found_hi := '1'; end if;
                     if v_ot_lo(k) = '1' then last_lo_k := k; found_lo := '1'; end if;
                 end loop;
 
                 carry_hi_next := (others => '0');
-                if found_hi = '1' and (last_hi_k + win_int) > 32 then
-                    carry_hi_next := to_unsigned(last_hi_k + win_int - 32, 8);
+                if found_hi = '1' and (last_hi_k + win_int) > N_SAMPLES then
+                    carry_hi_next := to_unsigned(last_hi_k + win_int - N_SAMPLES, 8);
                 end if;
 
                 carry_lo_next := (others => '0');
-                if found_lo = '1' and (last_lo_k + win_int) > 32 then
-                    carry_lo_next := to_unsigned(last_lo_k + win_int - 32, 8);
+                if found_lo = '1' and (last_lo_k + win_int) > N_SAMPLES then
+                    carry_lo_next := to_unsigned(last_lo_k + win_int - N_SAMPLES, 8);
                 end if;
 
                 carry_count_hi_d <= carry_hi_next;
