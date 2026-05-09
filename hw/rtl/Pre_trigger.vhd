@@ -86,7 +86,7 @@ begin
                 v_coinc    := (others => (others => '0'));
                 coinc_next := (others => (others => '0'));
 
-                if unsigned(COINC_WINDOW) > N_SAMPLES then
+                if to_integer(unsigned(COINC_WINDOW)) > N_SAMPLES then
                     coinc_int := N_SAMPLES;
                 else
                     coinc_int := to_integer(unsigned(COINC_WINDOW));

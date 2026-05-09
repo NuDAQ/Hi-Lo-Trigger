@@ -21,7 +21,7 @@ use ieee.numeric_std.all;
 PACKAGE PRE_TRIGGER_pkg IS
 
     -- Batch size: number of ADC samples delivered per DATA_STR pulse.
-    -- Must match the ADC readout block. Max 256 (carry registers are 8-bit).
+    -- Must match the ADC readout block. Max 255 (coinc_int variable is range 0 to 255).
     constant N_SAMPLES : integer := 32;
 
     -- Per-channel sample batch: N_SAMPLES x 12 bits (index N_SAMPLES-1 = newest)
