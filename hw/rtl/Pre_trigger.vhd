@@ -28,7 +28,7 @@ port (
     ADC_DATA4    : in  adc_data4_type;
     THRESH       : in  std_logic_vector(11 downto 0);
     HILO_WINDOW  : in  std_logic_vector( 4 downto 0); -- Configurable 0 to 16
-    COINC_WINDOW : in  std_logic_vector( 5 downto 0); -- Configurable 0 to 32
+    COINC_WINDOW : in  std_logic_vector( 5 downto 0); -- Configurable 0 to N_SAMPLES (hardware-clamped)
     BIN_THR      : in  std_logic_vector( 3 downto 0);
     PRE_TRIG     : out std_logic
 );
@@ -39,7 +39,7 @@ architecture behav of PRE_TRIGGER is
     signal gate4      : gate4_type;        -- bipolar gate outputs, registered in 1CH
     signal coinc4     : gate4_type;        -- gates after coincidence-window smear
     signal mult32     : mult4x32_type;     -- 4-ch multiplicity vector per time bin
-    signal trig32     : std_logic_vector(31 downto 0); -- per-bin trigger (combinational)
+    signal trig32     : std_logic_vector(N_SAMPLES-1 downto 0); -- per-bin trigger (combinational)
     signal coinc_d    : carry4_type;       -- inter-channel coincidence carry-over
     signal data_str_d : std_logic;         -- DATA_STR delayed 1 cycle (aligns with gate4)
 
@@ -73,7 +73,7 @@ begin
         variable coinc_next  : carry4_type;
         variable coinc_int   : integer range 0 to 255;
         variable carry_int   : integer range 0 to 255;
-        variable last_k      : integer range 0 to 31;
+        variable last_k      : integer range 0 to N_SAMPLES-1;
         variable found_k     : std_logic;
     begin
         if RESET = '1' then
@@ -86,8 +86,8 @@ begin
                 v_coinc    := (others => (others => '0'));
                 coinc_next := (others => (others => '0'));
 
-                if unsigned(COINC_WINDOW) > 32 then
-                    coinc_int := 32;
+                if to_integer(unsigned(COINC_WINDOW)) > N_SAMPLES then
+                    coinc_int := N_SAMPLES;
                 else
                     coinc_int := to_integer(unsigned(COINC_WINDOW));
                 end if;
@@ -95,14 +95,14 @@ begin
                 for c in 0 to 3 loop
                     carry_int := to_integer(coinc_d(c)); -- value from previous batch
 
-                    -- Sliding-window gate: all 32 samples computed in parallel
-                    for i in 0 to 31 loop
+                    -- Sliding-window gate: all N_SAMPLES samples computed in parallel
+                    for i in 0 to N_SAMPLES-1 loop
                         -- (a) Cross-batch carry
                         if i < carry_int then
                             v_coinc(c)(i) := '1';
                         end if;
                         -- (b) Within-batch sliding-window OR
-                        for k in 0 to 31 loop
+                        for k in 0 to N_SAMPLES-1 loop
                             if k <= i and (i - k) < coinc_int then
                                 if gate4(c)(k) = '1' then
                                     v_coinc(c)(i) := '1';
@@ -113,13 +113,13 @@ begin
 
                     last_k  := 0;
                     found_k := '0';
-                    for k in 0 to 31 loop
+                    for k in 0 to N_SAMPLES-1 loop
                         if gate4(c)(k) = '1' then last_k := k; found_k := '1'; end if;
                     end loop;
 
                     coinc_next(c) := (others => '0');
-                    if found_k = '1' and (last_k + coinc_int) > 32 then
-                        coinc_next(c) := to_unsigned(last_k + coinc_int - 32, 8);
+                    if found_k = '1' and (last_k + coinc_int) > N_SAMPLES then
+                        coinc_next(c) := to_unsigned(last_k + coinc_int - N_SAMPLES, 8);
                     end if;
                 end loop;
 
@@ -132,7 +132,7 @@ begin
         end if;
     end process;
 
-    mult_gen: for i in 0 to 31 generate
+    mult_gen: for i in 0 to N_SAMPLES-1 generate
         mult32(i) <= coinc4(0)(i) & coinc4(1)(i) & coinc4(2)(i) & coinc4(3)(i);
 
         U_MULT: entity work.MULT2BIN
@@ -143,6 +143,6 @@ begin
         );
     end generate;
 
-    PRE_TRIG <= '0' when trig32 = x"00000000" else '1';
+    PRE_TRIG <= '0' when trig32 = (trig32'range => '0') else '1';
 
 end behav;
