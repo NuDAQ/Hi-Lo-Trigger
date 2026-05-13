@@ -22,7 +22,7 @@ PACKAGE PRE_TRIGGER_pkg IS
 
     -- Batch size: number of ADC samples delivered per DATA_STR pulse.
     -- Must match the ADC readout block. Max 255 (coinc_int variable is range 0 to 255).
-    constant N_SAMPLES : integer := 32;
+    constant N_SAMPLES : integer := 16;
 
     -- Per-channel sample batch: N_SAMPLES x 12 bits (index N_SAMPLES-1 = newest)
     type adc_data_type    is array (0 to N_SAMPLES-1) of STD_LOGIC_VECTOR(11 downto 0);
