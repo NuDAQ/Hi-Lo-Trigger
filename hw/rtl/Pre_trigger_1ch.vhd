@@ -68,12 +68,11 @@ begin
                 thresh_pos   := signed(THRESH);
                 thresh_neg   := -signed(THRESH);
                 
-                -- Hardware clamp: Force max value of 16
-                if unsigned(HILO_WINDOW) > 16 then
-                    win_int := 16;
-                else
-                    win_int := to_integer(unsigned(HILO_WINDOW));
-                end if;
+                -- Clamp to min(16, N_SAMPLES): win_int must not exceed batch size,
+                -- which would require multi-batch carry propagation (not supported).
+                win_int := to_integer(unsigned(HILO_WINDOW));
+                if win_int > 16       then win_int := 16;        end if;
+                if win_int > N_SAMPLES then win_int := N_SAMPLES; end if;
                 
                 carry_hi_int := to_integer(carry_count_hi_d); -- value from prev batch
                 carry_lo_int := to_integer(carry_count_lo_d);
