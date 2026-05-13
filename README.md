@@ -51,7 +51,7 @@ For every individual time bin (0 to `N_SAMPLES-1`), the system aggregates the co
 | Parameter | Specification |
 | :--- | :--- |
 | **Channel Count** | 4 Channels |
-| **Batch Size** | `N_SAMPLES` per clock cycle (default 32; set in `PRE_TRIGGER_PKG.vhd`, max 255) |
+| **Batch Size** | `N_SAMPLES` per clock cycle (default 16; set in `PRE_TRIGGER_PKG.vhd`, max 255) |
 | **ADC Resolution** | 12-bit signed |
 | **Hi-Lo Window** | 0 to 16 samples (hardware-clamped, 5-bit input) |
 | **Coincidence Window** | 0 to `N_SAMPLES` (hardware-clamped, 6-bit input; max effective value = min(`N_SAMPLES`, 63)) |
