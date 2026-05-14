@@ -25,7 +25,7 @@ The rtl files are under `hw/rtl/`.
 | `ADC_DATA4` | in | 4 × N_SAMPLES × 12 b | 12-bit signed ADC samples for 4 channels (newest sample last) |
 | `THRESH` | in | 12 b | Absolute threshold; compared as `> +THRESH` and `< -THRESH` |
 | `HILO_WINDOW` | in | 5 b | Hi-Lo coincidence window, 0–16 samples (hardware-clamped) |
-| `COINC_WINDOW` | in | 6 b | Temporal smearing window, 0–32 samples (hardware-clamped) |
+| `COINC_WINDOW` | in | 6 b | Temporal smearing window, 0–32 samples |
 | `BIN_THR` | in | 4 b | Minimum active-channel count to assert `PRE_TRIG` |
 | `PRE_TRIG` | out | 1 | Asserted if any time bin meets the multiplicity threshold |
 
@@ -39,8 +39,8 @@ Both windows include **cross-batch carry-over**: if a threshold crossing occurs 
 A logical AND of the two stretched vectors produces the `GATE` output, which is active only when both a high and a low threshold crossing have occurred within the configured window.
 
 2. **Temporal Coincidence Smearing (`PRE_TRIGGER`)**
-The `GATE` signal from each channel is stretched using a second sliding window, `COINC_WINDOW` (hardware-clamped to ≤ `N_SAMPLES`), computed in parallel across all `N_SAMPLES` time bins.
-A per-channel carry register (`coinc_d`) propagates the active window state across batch boundaries, preventing event loss at the batch boundary.
+The `GATE` signal from each channel is stretched using a second sliding window of `COINC_WINDOW` samples (0–32), computed in parallel across all `N_SAMPLES` time bins. `COINC_WINDOW` is a physics parameter independent of `N_SAMPLES` — it reflects the maximum arrival-time difference between channels for a real signal.
+A per-channel carry register (`coinc_d`) propagates the active window state across batch boundaries, supporting `COINC_WINDOW` larger than `N_SAMPLES`.
 `DATA_STR` is pipelined by one cycle (`data_str_d`) to align with the registered `gate4` outputs from Stage 1.
 
 3. **Multiplicity Evaluation (`MULT2BIN`)**
@@ -51,10 +51,10 @@ For every individual time bin (0 to `N_SAMPLES-1`), the system aggregates the co
 | Parameter | Specification |
 | :--- | :--- |
 | **Channel Count** | 4 Channels |
-| **Batch Size** | `N_SAMPLES` per clock cycle (default 16; set in `PRE_TRIGGER_PKG.vhd`, max 255) |
+| **Batch Size** | `N_SAMPLES` per clock cycle (default 16; set in `PRE_TRIGGER_PKG.vhd`, valid range 8–64) |
 | **ADC Resolution** | 12-bit signed |
 | **Hi-Lo Window** | 0 to 16 samples (hardware-clamped, 5-bit input) |
-| **Coincidence Window** | 0 to `N_SAMPLES` (hardware-clamped, 6-bit input; max effective value = min(`N_SAMPLES`, 63)) |
+| **Coincidence Window** | 0 to 32 samples (6-bit input, independent of `N_SAMPLES`) |
 | **Multiplicity Threshold** | Configurable 0–4 via `BIN_THR` (4-bit) |
 | **Cross-Batch Carry** | Both Stage 1 (hi/lo) and Stage 2 (coincidence) |
 

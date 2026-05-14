@@ -28,7 +28,7 @@ port (
     ADC_DATA4    : in  adc_data4_type;
     THRESH       : in  std_logic_vector(11 downto 0);
     HILO_WINDOW  : in  std_logic_vector( 4 downto 0); -- Configurable 0 to 16
-    COINC_WINDOW : in  std_logic_vector( 5 downto 0); -- Configurable 0 to N_SAMPLES (hardware-clamped)
+    COINC_WINDOW : in  std_logic_vector( 5 downto 0); -- Configurable 0 to 32, independent of N_SAMPLES
     BIN_THR      : in  std_logic_vector( 3 downto 0);
     PRE_TRIG     : out std_logic
 );
@@ -86,8 +86,9 @@ begin
                 v_coinc    := (others => (others => '0'));
                 coinc_next := (others => (others => '0'));
 
-                if to_integer(unsigned(COINC_WINDOW)) > N_SAMPLES then
-                    coinc_int := N_SAMPLES;
+                -- Clamp to physical maximum of 32 (independent of N_SAMPLES)
+                if to_integer(unsigned(COINC_WINDOW)) > 32 then
+                    coinc_int := 32;
                 else
                     coinc_int := to_integer(unsigned(COINC_WINDOW));
                 end if;
@@ -117,9 +118,16 @@ begin
                         if gate4(c)(k) = '1' then last_k := k; found_k := '1'; end if;
                     end loop;
 
+                    -- Carry from new gate4 activity in this batch
                     coinc_next(c) := (others => '0');
                     if found_k = '1' and (last_k + coinc_int) > N_SAMPLES then
                         coinc_next(c) := to_unsigned(last_k + coinc_int - N_SAMPLES, 8);
+                    end if;
+                    -- Multi-batch carry: if incoming carry exceeds this batch, propagate remainder
+                    if carry_int > N_SAMPLES then
+                        if (carry_int - N_SAMPLES) > to_integer(coinc_next(c)) then
+                            coinc_next(c) := to_unsigned(carry_int - N_SAMPLES, 8);
+                        end if;
                     end if;
                 end loop;
 
