@@ -54,7 +54,7 @@ architecture sim of tb_pre_trigger_1ch is
     signal DATA_STR    : std_logic := '0';
     signal ADC_DATA    : adc_data_type := (others => (others => '0'));
     signal THRESH      : std_logic_vector(11 downto 0);
-    signal HILO_WINDOW : std_logic_vector( 4 downto 0);
+    signal HILO_WINDOW : std_logic_vector( 4 downto 0) := "00101";
     signal GATE        : std_logic_vector(0 to N_SAMPLES-1);
 
     -- -------------------------------------------------------------------------
@@ -93,7 +93,6 @@ begin
     --  Stimulus
     -- -------------------------------------------------------------------------
     THRESH      <= x"064";  -- 100
-    HILO_WINDOW <= "00101"; -- 5 samples
 
     stimulus : process
         variable b   : adc_data_type;
@@ -265,6 +264,37 @@ begin
         assert GATE = (0 to N_SAMPLES-1 => '0')
             report "T08 FAIL: RESET should clear carry; GATE must be all 0" severity failure;
         report "T08 PASS  RESET clears carry state";
+
+        -- T09: W=31, first crossing at global sample 14 and the opposite
+        -- crossing at 32. The overlap is samples 32..44 (batch C bins 0..12).
+        -- An empty batch B must not discard the remaining window.
+        HILO_WINDOW <= std_logic_vector(to_unsigned(31, HILO_WINDOW'length));
+        for polarity in 0 to 1 loop
+            RESET <= '1';
+            wait until rising_edge(CLK);
+            RESET <= '0';
+            b := (others => ADC_ZERO);
+            if polarity = 0 then b(14) := ADC_HI; else b(14) := ADC_LO; end if;
+            send_batch(b);
+            assert GATE = (GATE'range => '0')
+                report "T09 first polarity alone must not trigger" severity failure;
+            b := (others => ADC_ZERO);
+            send_batch(b);
+            assert GATE = (GATE'range => '0')
+                report "T09 empty middle batch must not trigger" severity failure;
+            if polarity = 0 then b(0) := ADC_LO; else b(0) := ADC_HI; end if;
+            send_batch(b);
+            exp := (others => '0');
+            exp(0 to 12) := (others => '1');
+            assert GATE = exp
+                report "T09 W=31 must retain Hi/Lo carry across an empty batch"
+                severity failure;
+            b := (others => ADC_ZERO);
+            send_batch(b);
+            assert GATE = (GATE'range => '0')
+                report "T09 expired first crossing must no longer trigger" severity failure;
+        end loop;
+        report "T09 PASS  Both polarities retain multi-batch carry";
 
         -- -----------------------------------------------------------------------
         report "========================================";
