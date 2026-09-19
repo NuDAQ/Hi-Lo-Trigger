@@ -1,0 +1,15 @@
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:130:9:@36ns:(report note): T01 PASS  Hi-only does not fire GATE
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:140:9:@46ns:(report note): T02 PASS  Lo-only does not fire GATE
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:158:9:@56ns:(report note): T03 PASS  Hi@0 Lo@3  GATE(3,4)=1
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:173:9:@66ns:(report note): T04 PASS  Hi@0 Lo@5 (gap=W) does not fire GATE
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:192:9:@76ns:(report note): T05 PASS  Lo@0 Hi@3 (reversed order) GATE(3,4)=1
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:210:9:@86ns:(report note): T06 PASS  Hi@10 Lo@12  GATE(12,13,14)=1
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:235:9:@96ns:(report note): T07a PASS  Batch-A: GATE(15)=1, carry_hi=3 carry_lo=4
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:246:9:@106ns:(report note): T07b PASS  Batch-B: GATE(0,1,2)=1 from cross-batch carry
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:266:9:@146ns:(report note): T08 PASS  RESET clears carry state
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:297:9:@246ns:(report note): T09 PASS  Both polarities retain multi-batch carry
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:325:9:@426ns:(report note): T10 PASS  Full eight-bit Hi-Lo window
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:328:9:@426ns:(report note): ========================================
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:329:9:@426ns:(report note): ALL PRE_TRIGGER_1CH TESTS PASSED
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger_1ch.vhd:330:9:@426ns:(report note): ========================================
+simulation finished @426ns

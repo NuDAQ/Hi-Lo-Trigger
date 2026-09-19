@@ -1,0 +1,29 @@
+{
+  "head": "86fb651eb2010e7a04c71d2e117f8d195c9af80d",
+  "legacy": "5758b7c160fa74c8c55fc2a51ac114834f75bdac",
+  "profile": {
+    "N_SAMPLES": 16,
+    "N_BITS": 12,
+    "N_CHANNEL": 4,
+    "N_WIN_WIDTH": 8
+  },
+  "random_seed": 3000,
+  "numpy": "2.4.6",
+  "ghdl": "GHDL 6.0.0 (6.0.0.r0.ge589c698c) [Dunoon edition]",
+  "bender": "bender 0.32.1",
+  "sha256": {
+    "hw/rtl/PRE_TRIGGER_PKG.vhd": "22f377eb765a7374a218d2d704a94f3e1910a0d0cd9afc31f42b5af7211d622a",
+    "hw/rtl/Mult_to_bin.vhd": "b423fa7c3bdcd9290e1cc0598af6ab1f508a1e9693784ee524816b3791059c97",
+    "hw/rtl/Pre_trigger_1ch.vhd": "4f1dd9a5d35ea5cad6ab4f38684f3d95832b351533cf0f6e36bca3840fbf7066",
+    "hw/rtl/Pre_trigger.vhd": "58799e5646af914a336a99132d94c755cf9a7dc056979f1578c25d4b82157640",
+    "hw/sim/tb_pre_trigger_1ch.vhd": "7aa67a0d6eb70b549affa50479799cdbd289b971e99a41fcedc7dd8a41be5621",
+    "hw/sim/tb_pre_trigger.vhd": "c786d13d9af191cb576604e94a3b533a806a7e8c467525e20f8c8b77e291e9c1",
+    "hw/sim/tb_pre_trigger_cosim.vhd": "75810110b73ea0b1b1bacbca50e5c53a50d89cb4168e49b26a2c26eed109931b",
+    "hw/sim/tb_hilo_trigger.vhd": "8ec2fcb330de6f4ce7ce93334f84dcc3d172bcf10fbb395c1ae096b2b5aff7c1",
+    "scripts/run_cosim_tests.py": "72a1362e688cc5c3abf285cc374e60ff4dd3bd9e25edecfe4609f573ee18114f",
+    "analysis/scripts/submodule/stimulus_generation.py": "42d20c098562de1218c5345968b6556b054c42eecde9bfa85153f1f3254b3275",
+    "analysis/scripts/plot_rtl_emulation.py": "47f6d9d6963a6259ec3364571252322ab60f09bf3bbe9119f013a9a26ebcd437",
+    "Bender.yml": "808ca1d957ef7013615d111e26e2fc2170ddc287d8641b692c11429b34070750",
+    "Bender.lock": "cb7c304646ccb61b1ff33055769dd29d2c14800ce66423613fee513f3f93f50c"
+  }
+}

@@ -11,6 +11,10 @@
 ##	DO NOT IGNORE THE FOLLOWING FILES
 ###########################################################################
 !Bender.*
+!scripts/
+!scripts/*.py
+!docs/
+!docs/**
 !hilo_trigger/
 !hilo_trigger/**/
 
@@ -27,6 +31,8 @@
 ##	ALWAYS IGNORE (must come after allowlist to override)
 ###########################################################################
 **/.DS_Store
+**/__pycache__/
+**/*.pyc
 .DS_Store
 ###########################################################################
 ##	VIVADO

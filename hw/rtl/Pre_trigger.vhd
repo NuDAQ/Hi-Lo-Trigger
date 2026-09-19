@@ -25,34 +25,34 @@ port (
     CLK          : in  std_logic;
     RESET        : in  std_logic;
     DATA_STR     : in  std_logic;
-    ADC_DATA4    : in  adc_data4_type;
-    THRESH       : in  std_logic_vector(11 downto 0);
-    HILO_WINDOW  : in  std_logic_vector( 4 downto 0); -- Configurable 0 to 16
-    COINC_WINDOW : in  std_logic_vector( 5 downto 0); -- Configurable 0 to 32, independent of N_SAMPLES
-    BIN_THR      : in  std_logic_vector( 3 downto 0);
+    ADC_DATA    : in  adc_ch_data_type;
+    THRESH       : in  std_logic_vector(N_BITS-1 downto 0);
+    HILO_WINDOW  : in  std_logic_vector(N_WIN_WIDTH-1 downto 0); -- 0 to 2**N_WIN_WIDTH-1 samples
+    COINC_WINDOW : in  std_logic_vector(N_WIN_WIDTH-1 downto 0); -- Independent of N_SAMPLES
+    BIN_THR      : in  std_logic_vector(N_CHANNEL-1 downto 0);
     PRE_TRIG     : out std_logic
 );
 end PRE_TRIGGER;
 
 architecture behav of PRE_TRIGGER is
 
-    signal gate4      : gate4_type;        -- bipolar gate outputs, registered in 1CH
-    signal coinc4     : gate4_type;        -- gates after coincidence-window smear
-    signal mult32     : mult4x32_type;     -- 4-ch multiplicity vector per time bin
+    signal gate4      : gate_type;        -- bipolar gate outputs, registered in 1CH
+    signal coinc4     : gate_type;        -- gates after coincidence-window smear
+    signal mult32     : mult_type;     -- 4-ch multiplicity vector per time bin
     signal trig32     : std_logic_vector(N_SAMPLES-1 downto 0); -- per-bin trigger (combinational)
-    signal coinc_d    : carry4_type;       -- inter-channel coincidence carry-over
+    signal coinc_d    : carry_type;       -- inter-channel coincidence carry-over
     signal data_str_d : std_logic;         -- DATA_STR delayed 1 cycle (aligns with gate4)
 
 begin
 
-    chan_gen: for i in 0 to 3 generate
+    chan_gen: for i in 0 to N_CHANNEL-1 generate
         U_CH: entity work.PRE_TRIGGER_1CH
         generic map (CH => i)
         port map (
             CLK         => CLK,
             RESET       => RESET,
             DATA_STR    => DATA_STR,
-            ADC_DATA    => ADC_DATA4(i),
+            ADC_DATA    => ADC_DATA(i),
             THRESH      => THRESH,
             HILO_WINDOW => HILO_WINDOW,
             GATE        => gate4(i)
@@ -69,10 +69,10 @@ begin
     end process;
 
     coinc_proc: process(CLK, RESET)
-        variable v_coinc     : gate4_type;
-        variable coinc_next  : carry4_type;
-        variable coinc_int   : integer range 0 to 255;
-        variable carry_int   : integer range 0 to 255;
+        variable v_coinc     : gate_type;
+        variable coinc_next  : carry_type;
+        variable coinc_int   : integer range 0 to 2**N_WIN_WIDTH-1;
+        variable carry_int   : integer range 0 to 2**N_WIN_WIDTH-1;
         variable last_k      : integer range 0 to N_SAMPLES-1;
         variable found_k     : std_logic;
     begin
@@ -86,14 +86,9 @@ begin
                 v_coinc    := (others => (others => '0'));
                 coinc_next := (others => (others => '0'));
 
-                -- Clamp to physical maximum of 32 (independent of N_SAMPLES)
-                if to_integer(unsigned(COINC_WINDOW)) > 32 then
-                    coinc_int := 32;
-                else
-                    coinc_int := to_integer(unsigned(COINC_WINDOW));
-                end if;
+                coinc_int := to_integer(unsigned(COINC_WINDOW));
 
-                for c in 0 to 3 loop
+                for c in 0 to N_CHANNEL-1 loop
                     carry_int := to_integer(coinc_d(c)); -- value from previous batch
 
                     -- Sliding-window gate: all N_SAMPLES samples computed in parallel
@@ -121,12 +116,12 @@ begin
                     -- Carry from new gate4 activity in this batch
                     coinc_next(c) := (others => '0');
                     if found_k = '1' and (last_k + coinc_int) > N_SAMPLES then
-                        coinc_next(c) := to_unsigned(last_k + coinc_int - N_SAMPLES, 8);
+                        coinc_next(c) := to_unsigned(last_k + coinc_int - N_SAMPLES, N_WIN_WIDTH);
                     end if;
                     -- Multi-batch carry: if incoming carry exceeds this batch, propagate remainder
                     if carry_int > N_SAMPLES then
                         if (carry_int - N_SAMPLES) > to_integer(coinc_next(c)) then
-                            coinc_next(c) := to_unsigned(carry_int - N_SAMPLES, 8);
+                            coinc_next(c) := to_unsigned(carry_int - N_SAMPLES, N_WIN_WIDTH);
                         end if;
                     end if;
                 end loop;
@@ -141,7 +136,9 @@ begin
     end process;
 
     mult_gen: for i in 0 to N_SAMPLES-1 generate
-        mult32(i) <= coinc4(0)(i) & coinc4(1)(i) & coinc4(2)(i) & coinc4(3)(i);
+        channel_bits: for c in 0 to N_CHANNEL-1 generate
+            mult32(i)(N_CHANNEL-1-c) <= coinc4(c)(i);
+        end generate;
 
         U_MULT: entity work.MULT2BIN
         port map (

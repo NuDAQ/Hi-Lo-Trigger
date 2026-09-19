@@ -1,0 +1,215 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
+| Date              : Sat Sep 19 04:02:49 2026
+| Host              : AlbertsUbuntu running 64-bit Ubuntu 22.04.5 LTS
+| Command           : report_cdc -details -file /tmp/hilo-v3-qual.sYGBtT/legacy/build/ooc/post_route_cdc.rpt
+| Design            : PRE_TRIGGER
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Routed
+| Temperature Grade : E
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+CDC Report
+
+ID      Severity  Count  Description
+------  --------  -----  -------------------------------------
+CDC-26  Warning     189  LUTRAM read/write potential collision
+
+Source Clock: input port clock
+Destination Clock: CLK
+CDC Type: No Common Primary Clock
+
+Row  ID      Severity  Description                            Depth  Exception   Source (From)  Destination (To)
+---  ------  --------  -------------------------------------  -----  ----------  -------------  --------------------------------------------
+  1  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[0]/CLR
+  2  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[1]/CLR
+  3  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[2]/CLR
+  4  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[3]/CLR
+  5  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[4]/CLR
+  6  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[5]/CLR
+  7  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[6]/CLR
+  8  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[7]/CLR
+  9  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[8]/CLR
+ 10  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[9]/CLR
+ 11  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[10]/CLR
+ 12  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[11]/CLR
+ 13  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[12]/CLR
+ 14  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[13]/CLR
+ 15  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[14]/CLR
+ 16  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/GATE_reg[15]/CLR
+ 17  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/carry_count_hi_d_reg[0]/CLR
+ 18  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/carry_count_hi_d_reg[1]/CLR
+ 19  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/carry_count_hi_d_reg[2]/CLR
+ 20  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/carry_count_hi_d_reg[3]/CLR
+ 21  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/carry_count_lo_d_reg[0]/CLR
+ 22  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/carry_count_lo_d_reg[1]/CLR
+ 23  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/carry_count_lo_d_reg[2]/CLR
+ 24  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[0].U_CH/carry_count_lo_d_reg[3]/CLR
+ 25  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[0]/CLR
+ 26  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[1]/CLR
+ 27  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[2]/CLR
+ 28  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[3]/CLR
+ 29  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[4]/CLR
+ 30  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[5]/CLR
+ 31  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[6]/CLR
+ 32  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[7]/CLR
+ 33  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[8]/CLR
+ 34  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[9]/CLR
+ 35  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[10]/CLR
+ 36  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[11]/CLR
+ 37  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[12]/CLR
+ 38  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[13]/CLR
+ 39  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[14]/CLR
+ 40  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/GATE_reg[15]/CLR
+ 41  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/carry_count_hi_d_reg[0]/CLR
+ 42  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/carry_count_hi_d_reg[1]/CLR
+ 43  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/carry_count_hi_d_reg[2]/CLR
+ 44  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/carry_count_hi_d_reg[3]/CLR
+ 45  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/carry_count_lo_d_reg[0]/CLR
+ 46  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/carry_count_lo_d_reg[1]/CLR
+ 47  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/carry_count_lo_d_reg[2]/CLR
+ 48  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[1].U_CH/carry_count_lo_d_reg[3]/CLR
+ 49  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[0]/CLR
+ 50  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[1]/CLR
+ 51  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[2]/CLR
+ 52  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[3]/CLR
+ 53  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[4]/CLR
+ 54  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[5]/CLR
+ 55  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[6]/CLR
+ 56  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[7]/CLR
+ 57  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[8]/CLR
+ 58  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[9]/CLR
+ 59  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[10]/CLR
+ 60  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[11]/CLR
+ 61  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[12]/CLR
+ 62  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[13]/CLR
+ 63  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[14]/CLR
+ 64  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/GATE_reg[15]/CLR
+ 65  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/carry_count_hi_d_reg[0]/CLR
+ 66  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/carry_count_hi_d_reg[1]/CLR
+ 67  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/carry_count_hi_d_reg[2]/CLR
+ 68  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/carry_count_hi_d_reg[3]/CLR
+ 69  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/carry_count_lo_d_reg[0]/CLR
+ 70  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/carry_count_lo_d_reg[1]/CLR
+ 71  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/carry_count_lo_d_reg[2]/CLR
+ 72  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[2].U_CH/carry_count_lo_d_reg[3]/CLR
+ 73  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[0]/CLR
+ 74  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[1]/CLR
+ 75  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[2]/CLR
+ 76  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[3]/CLR
+ 77  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[4]/CLR
+ 78  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[5]/CLR
+ 79  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[6]/CLR
+ 80  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[7]/CLR
+ 81  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[8]/CLR
+ 82  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[9]/CLR
+ 83  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[10]/CLR
+ 84  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[11]/CLR
+ 85  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[12]/CLR
+ 86  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[13]/CLR
+ 87  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[14]/CLR
+ 88  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/GATE_reg[15]/CLR
+ 89  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/carry_count_hi_d_reg[0]/CLR
+ 90  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/carry_count_hi_d_reg[1]/CLR
+ 91  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/carry_count_hi_d_reg[2]/CLR
+ 92  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/carry_count_hi_d_reg[3]/CLR
+ 93  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/carry_count_lo_d_reg[0]/CLR
+ 94  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/carry_count_lo_d_reg[1]/CLR
+ 95  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/carry_count_lo_d_reg[2]/CLR
+ 96  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          chan_gen[3].U_CH/carry_count_lo_d_reg[3]/CLR
+ 97  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][0]/CLR
+ 98  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][1]/CLR
+ 99  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][2]/CLR
+100  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][3]/CLR
+101  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][4]/CLR
+102  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][5]/CLR
+103  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][6]/CLR
+104  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][7]/CLR
+105  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][8]/CLR
+106  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][9]/CLR
+107  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][10]/CLR
+108  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][11]/CLR
+109  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][12]/CLR
+110  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][13]/CLR
+111  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][14]/CLR
+112  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[0][15]/CLR
+113  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][0]/CLR
+114  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][1]/CLR
+115  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][2]/CLR
+116  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][3]/CLR
+117  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][4]/CLR
+118  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][5]/CLR
+119  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][6]/CLR
+120  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][7]/CLR
+121  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][8]/CLR
+122  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][9]/CLR
+123  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][10]/CLR
+124  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][11]/CLR
+125  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][12]/CLR
+126  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][13]/CLR
+127  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][14]/CLR
+128  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[1][15]/CLR
+129  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][0]/CLR
+130  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][1]/CLR
+131  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][2]/CLR
+132  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][3]/CLR
+133  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][4]/CLR
+134  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][5]/CLR
+135  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][6]/CLR
+136  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][7]/CLR
+137  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][8]/CLR
+138  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][9]/CLR
+139  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][10]/CLR
+140  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][11]/CLR
+141  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][12]/CLR
+142  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][13]/CLR
+143  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][14]/CLR
+144  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[2][15]/CLR
+145  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][0]/CLR
+146  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][1]/CLR
+147  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][2]/CLR
+148  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][3]/CLR
+149  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][4]/CLR
+150  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][5]/CLR
+151  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][6]/CLR
+152  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][7]/CLR
+153  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][8]/CLR
+154  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][9]/CLR
+155  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][10]/CLR
+156  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][11]/CLR
+157  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][12]/CLR
+158  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][13]/CLR
+159  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][14]/CLR
+160  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc4_reg[3][15]/CLR
+161  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[0][0]/CLR
+162  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[0][1]/CLR
+163  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[0][2]/CLR
+164  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[0][3]/CLR
+165  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[0][4]/CLR
+166  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[0][5]/CLR
+167  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[0][6]/CLR
+168  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[1][0]/CLR
+169  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[1][1]/CLR
+170  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[1][2]/CLR
+171  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[1][3]/CLR
+172  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[1][4]/CLR
+173  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[1][5]/CLR
+174  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[1][6]/CLR
+175  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[2][0]/CLR
+176  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[2][1]/CLR
+177  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[2][2]/CLR
+178  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[2][3]/CLR
+179  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[2][4]/CLR
+180  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[2][5]/CLR
+181  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[2][6]/CLR
+182  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[3][0]/CLR
+183  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[3][1]/CLR
+184  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[3][2]/CLR
+185  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[3][3]/CLR
+186  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[3][4]/CLR
+187  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[3][5]/CLR
+188  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          coinc_d_reg[3][6]/CLR
+189  CDC-26  Warning   LUTRAM read/write potential collision      0  False Path  RESET          data_str_d_reg/CLR
+

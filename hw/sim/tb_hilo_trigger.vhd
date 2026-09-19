@@ -27,7 +27,11 @@ entity tb_hilo_trigger is
     generic (
         THRESHOLD : integer := 100;
         CLOCKS_PER_EVENT : integer := 1;
-        ENABLE_RESET_ISOLATION : boolean := false 
+        ENABLE_RESET_ISOLATION : boolean := false;
+        HILO_WINDOW_VALUE : natural := 5;
+        COINC_WINDOW_VALUE : natural := 30;
+        BIN_THRESHOLD : natural := 1;
+        GAP_CYCLES : natural := 0
     );
 end entity;
 
@@ -38,11 +42,11 @@ architecture sim of tb_hilo_trigger is
     signal DATA_STR     : std_logic := '0';
     signal DATA_STR_D1  : std_logic := '0';
     signal DATA_STR_D2  : std_logic := '0';
-    signal ADC_DATA4    : adc_data4_type := (others => (others => (others => '0')));
-    signal THRESH_SIG   : std_logic_vector(11 downto 0);
-    signal HILO_WINDOW  : std_logic_vector( 4 downto 0);
-    signal COINC_WINDOW : std_logic_vector( 5 downto 0);
-    signal BIN_THR      : std_logic_vector( 3 downto 0);
+    signal ADC_DATA    : adc_ch_data_type := (others => (others => (others => '0')));
+    signal THRESH_SIG   : std_logic_vector(N_BITS-1 downto 0);
+    signal HILO_WINDOW  : std_logic_vector(N_WIN_WIDTH-1 downto 0);
+    signal COINC_WINDOW : std_logic_vector(N_WIN_WIDTH-1 downto 0);
+    signal BIN_THR      : std_logic_vector(N_CHANNEL-1 downto 0);
     signal PRE_TRIG     : std_logic;
     
     signal END_SIM      : boolean := false;
@@ -50,14 +54,14 @@ architecture sim of tb_hilo_trigger is
     constant CLK_PERIOD : time := 10 ns;
 begin
 
-    THRESH_SIG <= std_logic_vector(to_signed(THRESHOLD, 12));
+    THRESH_SIG <= std_logic_vector(to_signed(THRESHOLD, N_BITS));
 
     U_DUT : entity work.PRE_TRIGGER
         port map (
             CLK          => CLK,
             RESET        => RESET,
             DATA_STR     => DATA_STR,
-            ADC_DATA4    => ADC_DATA4,
+            ADC_DATA    => ADC_DATA,
             THRESH       => THRESH_SIG,
             HILO_WINDOW  => HILO_WINDOW,
             COINC_WINDOW => COINC_WINDOW,
@@ -81,12 +85,12 @@ begin
         file stim_file      : text;
         variable in_line    : line;
         variable val        : integer;
-        variable batch      : adc_data4_type;
+        variable batch      : adc_ch_data_type;
         variable clk_count  : integer := 0;
     begin
-        HILO_WINDOW  <= "00101";
-        COINC_WINDOW <= "011110";
-        BIN_THR      <= x"1";
+        HILO_WINDOW  <= std_logic_vector(to_unsigned(HILO_WINDOW_VALUE, HILO_WINDOW'length));
+        COINC_WINDOW <= std_logic_vector(to_unsigned(COINC_WINDOW_VALUE, COINC_WINDOW'length));
+        BIN_THR      <= std_logic_vector(to_unsigned(BIN_THRESHOLD, BIN_THR'length));
         
         RESET <= '1';
         DATA_STR <= '0';
@@ -99,14 +103,14 @@ begin
         
         while not endfile(stim_file) loop
             readline(stim_file, in_line);
-            for ch in 0 to 3 loop
-                for samp in 0 to 31 loop
+            for ch in 0 to N_CHANNEL-1 loop
+                for samp in 0 to N_SAMPLES-1 loop
                     read(in_line, val);
-                    batch(ch)(samp) := std_logic_vector(to_signed(val, 12));
+                    batch(ch)(samp) := std_logic_vector(to_signed(val, N_BITS));
                 end loop;
             end loop;
 
-            ADC_DATA4 <= batch;
+            ADC_DATA <= batch;
             DATA_STR  <= '1';
             wait until rising_edge(CLK);
             
@@ -114,10 +118,19 @@ begin
             
             if ENABLE_RESET_ISOLATION and (clk_count = CLOCKS_PER_EVENT) then
                 DATA_STR <= '0';
+                -- Let the last accepted batch pass both registered stages and
+                -- reach the monitor before the asynchronous reset clears it.
+                wait until rising_edge(CLK);
+                wait until rising_edge(CLK);
                 RESET <= '1';
                 wait until rising_edge(CLK);
                 RESET <= '0';
                 clk_count := 0;
+            elsif GAP_CYCLES > 0 then
+                DATA_STR <= '0';
+                for gap in 1 to GAP_CYCLES loop
+                    wait until rising_edge(CLK);
+                end loop;
             end if;
             
         end loop;

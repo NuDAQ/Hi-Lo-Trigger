@@ -27,7 +27,7 @@ entity PRE_TRIGGER_UTIL_WRAPPER is
         clk_i        : in  std_logic;
         rst_i        : in  std_logic;
         -- Minimal physical I/O to pass DRC (Design Rule Check)
-        seed_data_i  : in  std_logic_vector(11 downto 0); 
+        seed_data_i  : in  std_logic_vector(N_BITS-1 downto 0);
         trig_out_o   : out std_logic
     );
 end PRE_TRIGGER_UTIL_WRAPPER;
@@ -35,16 +35,16 @@ end PRE_TRIGGER_UTIL_WRAPPER;
 architecture Behavioral of PRE_TRIGGER_UTIL_WRAPPER is
 
     -- Signals to interface with the DUT (Device Under Test)
-    signal sig_adc_data4  : adc_data4_type; -- Corrected type from PRE_TRIGGER_pkg
-    signal sig_thresh     : std_logic_vector(11 downto 0);
-    signal sig_hilo_win   : std_logic_vector(4 downto 0);
-    signal sig_coinc_win  : std_logic_vector(5 downto 0);
-    signal sig_bin_thr    : std_logic_vector(3 downto 0);
+    signal sig_adc_data4  : adc_ch_data_type; -- Corrected type from PRE_TRIGGER_pkg
+    signal sig_thresh     : std_logic_vector(N_BITS-1 downto 0);
+    signal sig_hilo_win   : std_logic_vector(N_WIN_WIDTH-1 downto 0);
+    signal sig_coinc_win  : std_logic_vector(N_WIN_WIDTH-1 downto 0);
+    signal sig_bin_thr    : std_logic_vector(N_CHANNEL-1 downto 0);
     signal sig_data_str   : std_logic;
     signal sig_pre_trig   : std_logic;
     
     -- Internal registers to prevent optimization
-    signal shift_reg      : std_logic_vector(11 downto 0);
+    signal shift_reg      : std_logic_vector(N_BITS-1 downto 0);
 
 begin
 
@@ -64,17 +64,17 @@ begin
     end process;
 
     -- 2. Fanout to DUT Inputs
-    FANOUT_GEN_CH: for c in 0 to 3 generate
-        FANOUT_GEN_SAMP: for s in 0 to 31 generate
-            sig_adc_data4(c)(s) <= shift_reg xor std_logic_vector(to_unsigned(c * s, 12));
+    FANOUT_GEN_CH: for c in 0 to N_CHANNEL-1 generate
+        FANOUT_GEN_SAMP: for s in 0 to N_SAMPLES-1 generate
+            sig_adc_data4(c)(s) <= shift_reg xor std_logic_vector(to_unsigned(c * s, N_BITS));
         end generate;
     end generate;
 
     -- Assign dynamic/static values to config ports
     sig_thresh    <= shift_reg;
-    sig_hilo_win  <= "01000"; -- Example static window of 8
-    sig_coinc_win <= "010000"; -- Example static window of 16
-    sig_bin_thr   <= "0010";  -- Example threshold of 2
+    sig_hilo_win  <= std_logic_vector(to_unsigned(8, N_WIN_WIDTH)); -- Example static window of 8
+    sig_coinc_win <= std_logic_vector(to_unsigned(16, N_WIN_WIDTH)); -- Example static window of 16
+    sig_bin_thr   <= std_logic_vector(to_unsigned(2, N_CHANNEL));  -- Example threshold of 2
 
     -- 3. Instantiate the Device Under Test
     DUT: entity work.PRE_TRIGGER
@@ -82,7 +82,7 @@ begin
             CLK          => clk_i,
             RESET        => rst_i,
             DATA_STR     => sig_data_str,
-            ADC_DATA4    => sig_adc_data4,
+            ADC_DATA    => sig_adc_data4,
             THRESH       => sig_thresh,
             HILO_WINDOW  => sig_hilo_win,
             COINC_WINDOW => sig_coinc_win,

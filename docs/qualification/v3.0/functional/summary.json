@@ -1,0 +1,26 @@
+[
+  {
+    "test": "packing",
+    "passed": true,
+    "details": null
+  },
+  {
+    "test": "isolation",
+    "passed": true,
+    "details": null
+  },
+  {
+    "test": "reference",
+    "passed": true,
+    "details": null
+  },
+  {
+    "test": "regression",
+    "passed": true,
+    "details": {
+      "cases": 64,
+      "batches": 7744,
+      "legacy_cases": 34
+    }
+  }
+]

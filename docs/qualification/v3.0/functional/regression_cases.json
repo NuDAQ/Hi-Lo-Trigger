@@ -1,0 +1,834 @@
+[
+  {
+    "config": [
+      100,
+      0,
+      32,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      0,
+      32,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      1,
+      32,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      1,
+      32,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      2,
+      1,
+      1
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 3,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      2,
+      1,
+      1
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 3,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      0,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      0,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      16,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      16,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      30,
+      1
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 15,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      30,
+      1
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 15,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      32,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      32,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      15,
+      31,
+      3
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 2,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      15,
+      31,
+      3
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 2,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      16,
+      32,
+      4
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      16,
+      32,
+      4
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      -2048,
+      5,
+      32,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      -2048,
+      5,
+      32,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      -1,
+      5,
+      32,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 128,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      -1,
+      5,
+      32,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 128,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      0,
+      5,
+      32,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 70,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      0,
+      5,
+      32,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 70,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      2047,
+      5,
+      32,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      2047,
+      5,
+      32,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      32,
+      0
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 128,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      32,
+      0
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 128,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      32,
+      5
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      32,
+      5
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      32,
+      15
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      5,
+      32,
+      15
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": true
+  },
+  {
+    "config": [
+      100,
+      17,
+      32,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 8,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      17,
+      32,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 8,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      31,
+      32,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 20,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      31,
+      32,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 20,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      32,
+      33,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 23,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      32,
+      33,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 23,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      33,
+      16,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 17,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      33,
+      16,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 17,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      63,
+      64,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 63,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      63,
+      64,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 63,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      127,
+      128,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 81,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      127,
+      128,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 81,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      128,
+      127,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 81,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      128,
+      127,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 81,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      254,
+      255,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 113,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      254,
+      255,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 113,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      255,
+      254,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 113,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      255,
+      254,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 113,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      255,
+      255,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 113,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      255,
+      255,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 113,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      5,
+      255,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 13,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      5,
+      255,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 13,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      255,
+      1,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 81,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      255,
+      1,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 81,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      0,
+      255,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      0,
+      255,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      255,
+      0,
+      2
+    ],
+    "isolated": false,
+    "gap": 0,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": false
+  },
+  {
+    "config": [
+      100,
+      255,
+      0,
+      2
+    ],
+    "isolated": true,
+    "gap": 2,
+    "batches": 128,
+    "triggered_batches": 0,
+    "legacy_compared": false
+  },
+  {
+    "fixture": "trigger_capture_snr4.0_thermal_chunk_0010.npy_ev9702.npy",
+    "sha256": "4bf435d0b9dc5066c2765091241c55ff25c46de113b048fee0fb2053a9992602",
+    "config": [
+      261,
+      16,
+      32,
+      2
+    ],
+    "batches": 16,
+    "triggered_batches": 3,
+    "legacy_compared": true
+  },
+  {
+    "fixture": "trigger_capture_snr4.0_thermal_chunk_0010.npy_ev9702.npy",
+    "sha256": "4bf435d0b9dc5066c2765091241c55ff25c46de113b048fee0fb2053a9992602",
+    "config": [
+      261,
+      255,
+      255,
+      2
+    ],
+    "batches": 16,
+    "triggered_batches": 12,
+    "legacy_compared": false
+  },
+  {
+    "fixture": "trigger_capture_snr4.0_thermal_chunk_0029.npy_ev6508.npy",
+    "sha256": "dd16b614d07eb11c56bb4c34f3dce54ec19141d74c6749dfc39411ab43b83a82",
+    "config": [
+      261,
+      16,
+      32,
+      2
+    ],
+    "batches": 16,
+    "triggered_batches": 4,
+    "legacy_compared": true
+  },
+  {
+    "fixture": "trigger_capture_snr4.0_thermal_chunk_0029.npy_ev6508.npy",
+    "sha256": "dd16b614d07eb11c56bb4c34f3dce54ec19141d74c6749dfc39411ab43b83a82",
+    "config": [
+      261,
+      255,
+      255,
+      2
+    ],
+    "batches": 16,
+    "triggered_batches": 12,
+    "legacy_compared": false
+  }
+]

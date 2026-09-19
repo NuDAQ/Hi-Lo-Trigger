@@ -15,6 +15,7 @@ sources:
       - hw/sim/tb_pre_trigger_1ch.vhd
       - hw/sim/tb_pre_trigger.vhd
       - hw/sim/tb_pre_trigger_cosim.vhd
+      - hw/sim/tb_hilo_trigger.vhd
 
   - target: synthesis
     files:
@@ -23,5 +24,4 @@ sources:
   - target: utilization
     files:
       - hw/sim/PRE_TRIGGER_UTIL_WRAPPER.vhd
-
 

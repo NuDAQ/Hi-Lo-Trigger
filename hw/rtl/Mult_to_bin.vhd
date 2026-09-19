@@ -17,33 +17,34 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
+use work.PRE_TRIGGER_pkg.all;
 
 -- MULT2BIN: Combinational multiplicity threshold
--- Counts the number of '1' bits in IN_VEC (one bit per channel, 4 channels).
+-- Counts the number of '1' bits in IN_VEC (one bit per channel, N_CHANNEL channels).
 -- Asserts TRIG when the count is >= BIN_THR.
 
 entity MULT2BIN is
     Port (
-        IN_VEC  : in  STD_LOGIC_VECTOR(3 downto 0);  -- one bit per channel (4 channels)
-        BIN_THR : in  STD_LOGIC_VECTOR(3 downto 0);
+        IN_VEC  : in  std_logic_vector(N_CHANNEL-1 downto 0);  -- one bit per channel
+        BIN_THR : in  std_logic_vector(N_CHANNEL-1 downto 0);
         TRIG    : out STD_LOGIC
     );
 end MULT2BIN;
 
 architecture Behavioral of MULT2BIN is
-    signal count : unsigned(3 downto 0);
+    signal count : unsigned(N_CHANNEL-1 downto 0);
 begin
 
     process(IN_VEC)
-        variable temp_count : integer range 0 to 4 := 0;
+        variable temp_count : integer range 0 to N_CHANNEL := 0;
     begin
         temp_count := 0;
-        for i in 0 to 3 loop
+        for i in 0 to N_CHANNEL-1 loop
             if IN_VEC(i) = '1' then
                 temp_count := temp_count + 1;
             end if;
         end loop;
-        count <= to_unsigned(temp_count, 4);
+        count <= to_unsigned(temp_count, N_CHANNEL);
     end process;
 
     process(count)
