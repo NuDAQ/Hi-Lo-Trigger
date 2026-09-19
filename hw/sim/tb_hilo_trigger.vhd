@@ -100,7 +100,7 @@ begin
         while not endfile(stim_file) loop
             readline(stim_file, in_line);
             for ch in 0 to 3 loop
-                for samp in 0 to 31 loop
+                for samp in 0 to N_SAMPLES-1 loop
                     read(in_line, val);
                     batch(ch)(samp) := std_logic_vector(to_signed(val, 12));
                 end loop;

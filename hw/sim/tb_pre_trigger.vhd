@@ -40,9 +40,9 @@
 --           BIN_THR=2                                -> PRE_TRIG=0 (no overlap)
 --    T07  4-ch simultaneous, BIN_THR=4               -> PRE_TRIG=1
 --    T08  Cross-batch coincidence carry (BIN_THR=1)
---           Batch-A : Ch0 Hi@28 Lo@30
+--           Batch-A : Ch0 Hi@12 Lo@14
 --             1CH carry: carry_hi=1, carry_lo=3
---             GATE_A(30,31)=1; coinc smear -> bins 30,31
+--             GATE_A(14,15)=1; coinc smear -> bins 14,15
 --             coinc carry -> coinc_d(0)=2
 --             PRE_TRIG_A=1
 --           Batch-B : all-zero
@@ -277,13 +277,13 @@ begin
         -- -----------------------------------------------------------------------
         --  T08 : Cross-batch coincidence carry, BIN_THR=1
         --
-        --  Batch-A: Ch0: Hi@28, Lo@30
-        --    GATE_A(30,31)=1
-        --      (gate_hi: k=28 -> bins 28..31; gate_lo: k=30 -> bins 30,31; AND -> 30,31)
-        --    1CH carry: carry_hi=1 (28+5−32), carry_lo=3 (30+5−32)
-        --    Coinc smear (W=3): k=30->i=30,31; k=31->i=31  ->  coinc(0) bins 30,31
-        --    Coinc carry: last gate4 bit at k=31; 31+3=34>32 -> coinc_d(0)=2
-        --    PRE_TRIG_A=1 (bins 30,31)
+        --  Batch-A: Ch0: Hi@12, Lo@14
+        --    GATE_A(14,15)=1
+        --      (gate_hi: k=12 -> bins 12..15; gate_lo: k=14 -> bins 14,15; AND -> 14,15)
+        --    1CH carry: carry_hi=1 (12+5−16), carry_lo=3 (14+5−16)
+        --    Coinc smear (W=3): k=14->i=14,15; k=15->i=15  ->  coinc(0) bins 14,15
+        --    Coinc carry: last gate4 bit at k=15; 15+3=18>16 -> coinc_d(0)=2
+        --    PRE_TRIG_A=1 (bins 14,15)
         --
         --  Batch-B: all-zero
         --    1CH carry: gate_hi(0)=1 (i<1), gate_lo(0,1,2)=1 (i<3) -> GATE_B(0)=1
@@ -294,12 +294,12 @@ begin
         -- -----------------------------------------------------------------------
         BIN_THR <= x"1";
         batch   := (others => (others => ADC_ZERO));
-        batch(0)(28) := ADC_HI;
-        batch(0)(30) := ADC_LO;
+        batch(0)(N_SAMPLES-4) := ADC_HI;
+        batch(0)(N_SAMPLES-2) := ADC_LO;
         send_batch(batch);
         assert PRE_TRIG = '1'
-            report "T08 FAIL Batch-A: expected PRE_TRIG=1 at bins 30,31" severity failure;
-        report "T08a PASS  Batch-A: Ch0 Hi@28 Lo@30 -> PRE_TRIG=1, coinc carry=2";
+            report "T08 FAIL Batch-A: expected PRE_TRIG=1 at bins 14,15" severity failure;
+        report "T08a PASS  Batch-A: Ch0 Hi@12 Lo@14 -> PRE_TRIG=1, coinc carry=2";
 
         -- Batch-B: all-zero; exercises both 1CH and coinc carry paths
         batch := (others => (others => ADC_ZERO));
@@ -317,8 +317,8 @@ begin
         BIN_THR <= x"1";
         -- Reproduce same Batch-A carry state as T08
         batch   := (others => (others => ADC_ZERO));
-        batch(0)(28) := ADC_HI;
-        batch(0)(30) := ADC_LO;
+        batch(0)(N_SAMPLES-4) := ADC_HI;
+        batch(0)(N_SAMPLES-2) := ADC_LO;
         send_batch(batch);
         -- Reset wipes carry_count_hi_d, carry_count_lo_d, coinc_d, GATE, coinc4
         do_reset;

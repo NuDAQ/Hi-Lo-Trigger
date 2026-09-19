@@ -30,7 +30,7 @@
 --    T05  Lo@0 then Hi@3  (reversed)   → GATE(3,4)=1
 --    T06  Hi@10 then Lo@12 (mid-batch) → GATE(12,13,14)=1
 --    T07  Cross-batch carry
---           Batch-A : Hi@30, Lo@31     → GATE_A(31)=1
+--           Batch-A : Hi@14, Lo@15     → GATE_A(15)=1
 --                                         carry_hi=3, carry_lo=4
 --           Batch-B : all-zero         → GATE_B(0,1,2)=1  (carry opens 3 bins)
 --    T08  RESET clears carry state
@@ -55,7 +55,7 @@ architecture sim of tb_pre_trigger_1ch is
     signal ADC_DATA    : adc_data_type := (others => (others => '0'));
     signal THRESH      : std_logic_vector(11 downto 0);
     signal HILO_WINDOW : std_logic_vector( 4 downto 0);
-    signal GATE        : std_logic_vector(0 to 31);
+    signal GATE        : std_logic_vector(0 to N_SAMPLES-1);
 
     -- -------------------------------------------------------------------------
     --  Testbench constants
@@ -97,7 +97,7 @@ begin
 
     stimulus : process
         variable b   : adc_data_type;
-        variable exp : std_logic_vector(0 to 31);
+        variable exp : std_logic_vector(0 to N_SAMPLES-1);
 
         -- Apply one DATA_STR pulse; GATE is valid after the rising edge.
         -- Caller reads GATE after this procedure returns.
@@ -126,7 +126,7 @@ begin
         b := (others => ADC_ZERO);
         b(5) := ADC_HI;
         send_batch(b);
-        assert GATE = (0 to 31 => '0')
+        assert GATE = (0 to N_SAMPLES-1 => '0')
             report "T01 FAIL: Hi-only should not trigger GATE" severity failure;
         report "T01 PASS  Hi-only does not fire GATE";
 
@@ -136,7 +136,7 @@ begin
         b := (others => ADC_ZERO);
         b(5) := ADC_LO;
         send_batch(b);
-        assert GATE = (0 to 31 => '0')
+        assert GATE = (0 to N_SAMPLES-1 => '0')
             report "T02 FAIL: Lo-only should not trigger GATE" severity failure;
         report "T02 PASS  Lo-only does not fire GATE";
 
@@ -169,7 +169,7 @@ begin
         b(0) := ADC_HI;
         b(5) := ADC_LO;
         send_batch(b);
-        assert GATE = (0 to 31 => '0')
+        assert GATE = (0 to N_SAMPLES-1 => '0')
             report "T04 FAIL: gap=W should not trigger (boundary check)" severity failure;
         report "T04 PASS  Hi@0 Lo@5 (gap=W) does not fire GATE";
 
@@ -213,12 +213,12 @@ begin
         -- -----------------------------------------------------------------------
         --  T07 : Cross-batch carry
         --
-        --  Batch-A: Hi@30, Lo@31
-        --    gate_hi open at i=30,31  (ot_hi(30), distance ≤ 4 for i=30,31)
-        --    gate_lo open at i=31     (ot_lo(31), distance 0 < 5)
-        --    GATE_A(31)=1
-        --    carry_hi = 30+5-32 = 3   (gate extends 3 samples into next batch)
-        --    carry_lo = 31+5-32 = 4
+        --  Batch-A: Hi@14, Lo@15
+        --    gate_hi open at i=14,15  (ot_hi(14), distance ≤ 4 for i=14,15)
+        --    gate_lo open at i=15     (ot_lo(15), distance 0 < 5)
+        --    GATE_A(15)=1
+        --    carry_hi = 14+5-16 = 3   (gate extends 3 samples into next batch)
+        --    carry_lo = 15+5-16 = 4
         --
         --  Batch-B: all-zero
         --    gate_hi: i<3 from carry   → i=0,1,2
@@ -226,14 +226,14 @@ begin
         --    GATE_B = AND  →  i=0,1,2
         -- -----------------------------------------------------------------------
         b := (others => ADC_ZERO);
-        b(30) := ADC_HI;
-        b(31) := ADC_LO;
+        b(N_SAMPLES-2) := ADC_HI;
+        b(N_SAMPLES-1) := ADC_LO;
         send_batch(b);
         exp     := (others => '0');
-        exp(31) := '1';
+        exp(N_SAMPLES-1) := '1';
         assert GATE = exp
-            report "T07 FAIL Batch-A: expected only GATE(31)=1" severity failure;
-        report "T07a PASS  Batch-A: GATE(31)=1, carry_hi=3 carry_lo=4";
+            report "T07 FAIL Batch-A: expected only GATE(15)=1" severity failure;
+        report "T07a PASS  Batch-A: GATE(15)=1, carry_hi=3 carry_lo=4";
 
         -- Batch-B: all zeros, exercises the carry path
         b := (others => ADC_ZERO);
@@ -251,8 +251,8 @@ begin
         -- -----------------------------------------------------------------------
         -- First build up carry state (same as batch-A of T07)
         b := (others => ADC_ZERO);
-        b(30) := ADC_HI;
-        b(31) := ADC_LO;
+        b(N_SAMPLES-2) := ADC_HI;
+        b(N_SAMPLES-1) := ADC_LO;
         send_batch(b);
         -- Now reset
         RESET <= '1';
@@ -262,7 +262,7 @@ begin
         -- Apply empty batch — carry should be gone
         b := (others => ADC_ZERO);
         send_batch(b);
-        assert GATE = (0 to 31 => '0')
+        assert GATE = (0 to N_SAMPLES-1 => '0')
             report "T08 FAIL: RESET should clear carry; GATE must be all 0" severity failure;
         report "T08 PASS  RESET clears carry state";
 

@@ -114,9 +114,9 @@ begin
             while not endfile(stim_file) loop
                 readline(stim_file, in_line);
 
-                -- Parse the 128 integers (4 channels * 32 samples)
+                -- Parse one channel-major batch (4 * N_SAMPLES integers).
                 for ch in 0 to 3 loop
-                    for samp in 0 to 31 loop
+                    for samp in 0 to N_SAMPLES-1 loop
                         read(in_line, val);
                         batch(ch)(samp) := std_logic_vector(to_signed(val, 12));
                     end loop;

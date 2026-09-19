@@ -65,7 +65,7 @@ begin
 
     -- 2. Fanout to DUT Inputs
     FANOUT_GEN_CH: for c in 0 to 3 generate
-        FANOUT_GEN_SAMP: for s in 0 to 31 generate
+        FANOUT_GEN_SAMP: for s in 0 to N_SAMPLES-1 generate
             sig_adc_data4(c)(s) <= shift_reg xor std_logic_vector(to_unsigned(c * s, 12));
         end generate;
     end generate;
