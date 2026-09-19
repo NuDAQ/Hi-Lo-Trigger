@@ -27,7 +27,11 @@ entity tb_hilo_trigger is
     generic (
         THRESHOLD : integer := 100;
         CLOCKS_PER_EVENT : integer := 1;
-        ENABLE_RESET_ISOLATION : boolean := false 
+        ENABLE_RESET_ISOLATION : boolean := false;
+        HILO_WINDOW_VALUE : natural := 5;
+        COINC_WINDOW_VALUE : natural := 30;
+        BIN_THRESHOLD : natural := 1;
+        GAP_CYCLES : natural := 0
     );
 end entity;
 
@@ -84,9 +88,9 @@ begin
         variable batch      : adc_ch_data_type;
         variable clk_count  : integer := 0;
     begin
-        HILO_WINDOW  <= std_logic_vector(to_unsigned(5, N_WIN_WIDTH));
-        COINC_WINDOW <= std_logic_vector(to_unsigned(30, N_WIN_WIDTH));
-        BIN_THR      <= std_logic_vector(to_unsigned(1, N_CHANNEL));
+        HILO_WINDOW  <= std_logic_vector(to_unsigned(HILO_WINDOW_VALUE, HILO_WINDOW'length));
+        COINC_WINDOW <= std_logic_vector(to_unsigned(COINC_WINDOW_VALUE, COINC_WINDOW'length));
+        BIN_THR      <= std_logic_vector(to_unsigned(BIN_THRESHOLD, BIN_THR'length));
         
         RESET <= '1';
         DATA_STR <= '0';
@@ -122,6 +126,11 @@ begin
                 wait until rising_edge(CLK);
                 RESET <= '0';
                 clk_count := 0;
+            elsif GAP_CYCLES > 0 then
+                DATA_STR <= '0';
+                for gap in 1 to GAP_CYCLES loop
+                    wait until rising_edge(CLK);
+                end loop;
             end if;
             
         end loop;
