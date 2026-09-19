@@ -86,12 +86,7 @@ begin
                 v_coinc    := (others => (others => '0'));
                 coinc_next := (others => (others => '0'));
 
-                -- Clamp to physical maximum of 32 (independent of N_SAMPLES)
-                if to_integer(unsigned(COINC_WINDOW)) > 32 then
-                    coinc_int := 32;
-                else
-                    coinc_int := to_integer(unsigned(COINC_WINDOW));
-                end if;
+                coinc_int := to_integer(unsigned(COINC_WINDOW));
 
                 for c in 0 to N_CHANNEL-1 loop
                     carry_int := to_integer(coinc_d(c)); -- value from previous batch

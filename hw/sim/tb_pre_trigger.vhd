@@ -72,7 +72,8 @@ architecture sim of tb_pre_trigger is
     signal ADC_DATA    : adc_ch_data_type := (others => (others => (others => '0')));
     signal THRESH       : std_logic_vector(N_BITS-1 downto 0);
     signal HILO_WINDOW  : std_logic_vector(N_WIN_WIDTH-1 downto 0);
-    signal COINC_WINDOW : std_logic_vector(N_WIN_WIDTH-1 downto 0);
+    signal COINC_WINDOW : std_logic_vector(N_WIN_WIDTH-1 downto 0) :=
+        std_logic_vector(to_unsigned(3, N_WIN_WIDTH));
     signal BIN_THR      : std_logic_vector(N_CHANNEL-1 downto 0);
     signal PRE_TRIG     : std_logic;
 
@@ -114,7 +115,6 @@ begin
     -- -------------------------------------------------------------------------
     THRESH       <= x"064";  -- 100 ADC counts
     HILO_WINDOW  <= std_logic_vector(to_unsigned(5, N_WIN_WIDTH)); -- 5-sample intra-channel bipolar window
-    COINC_WINDOW <= std_logic_vector(to_unsigned(3, N_WIN_WIDTH)); -- 3-sample inter-channel coincidence window
 
     stimulus : process
         variable batch : adc_ch_data_type;
@@ -328,6 +328,43 @@ begin
         assert PRE_TRIG = '0'
             report "T09 FAIL: RESET should clear all carry; PRE_TRIG must be 0" severity failure;
         report "T09 PASS  RESET clears coinc carry -> PRE_TRIG=0";
+
+        -- T10: ch0 Hi@0/Lo@1 with HILO=5 has gate samples 1..4.
+        -- COINC=255 extends that through sample 258. A second channel's
+        -- gate beginning at 257 overlaps; one beginning at 259 does not.
+        COINC_WINDOW <= std_logic_vector(to_unsigned(255, N_WIN_WIDTH));
+        BIN_THR <= std_logic_vector(to_unsigned(2, N_CHANNEL));
+        for late_offset in 0 to 1 loop
+            do_reset;
+            batch := (others => (others => ADC_ZERO));
+            batch(0)(0) := ADC_HI;
+            batch(0)(1) := ADC_LO;
+            send_batch(batch);
+            assert PRE_TRIG = '0'
+                report "T10 one channel cannot meet BIN_THR=2" severity failure;
+            batch := (others => (others => ADC_ZERO));
+            for empty_batch in 1 to 15 loop
+                send_batch(batch);
+                assert PRE_TRIG = '0'
+                    report "T10 empty batches cannot supply a second channel" severity failure;
+            end loop;
+            batch(1)(2*late_offset) := ADC_HI;
+            batch(1)(2*late_offset+1) := ADC_LO;
+            send_batch(batch);
+            if late_offset = 0 then
+                assert PRE_TRIG = '1'
+                    report "T10 COINC=255 must retain ch0 until ch1 overlaps"
+                    severity failure;
+            else
+                assert PRE_TRIG = '0'
+                    report "T10 coincidence must expire before sample 259" severity failure;
+            end if;
+            batch := (others => (others => ADC_ZERO));
+            send_batch(batch);
+            assert PRE_TRIG = '0'
+                report "T10 expired ch0 must not keep contributing" severity failure;
+        end loop;
+        report "T10 PASS  Full eight-bit coincidence window and expiration";
 
 -- -----------------------------------------------------------------------
         report "========================================";
