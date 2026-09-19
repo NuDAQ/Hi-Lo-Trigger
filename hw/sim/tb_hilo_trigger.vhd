@@ -114,6 +114,10 @@ begin
             
             if ENABLE_RESET_ISOLATION and (clk_count = CLOCKS_PER_EVENT) then
                 DATA_STR <= '0';
+                -- Let the last accepted batch pass both registered stages and
+                -- reach the monitor before the asynchronous reset clears it.
+                wait until rising_edge(CLK);
+                wait until rising_edge(CLK);
                 RESET <= '1';
                 wait until rising_edge(CLK);
                 RESET <= '0';
