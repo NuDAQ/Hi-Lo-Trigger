@@ -69,22 +69,22 @@ architecture sim of tb_pre_trigger is
     signal CLK          : std_logic := '0';
     signal RESET        : std_logic := '1';
     signal DATA_STR     : std_logic := '0';
-    signal ADC_DATA4    : adc_data4_type := (others => (others => (others => '0')));
-    signal THRESH       : std_logic_vector(11 downto 0);
-    signal HILO_WINDOW  : std_logic_vector( 4 downto 0);
-    signal COINC_WINDOW : std_logic_vector( 5 downto 0);
-    signal BIN_THR      : std_logic_vector( 3 downto 0);
+    signal ADC_DATA    : adc_ch_data_type := (others => (others => (others => '0')));
+    signal THRESH       : std_logic_vector(N_BITS-1 downto 0);
+    signal HILO_WINDOW  : std_logic_vector(N_WIN_WIDTH-1 downto 0);
+    signal COINC_WINDOW : std_logic_vector(N_WIN_WIDTH-1 downto 0);
+    signal BIN_THR      : std_logic_vector(N_CHANNEL-1 downto 0);
     signal PRE_TRIG     : std_logic;
 
     -- -------------------------------------------------------------------------
     --  Testbench constants
     -- -------------------------------------------------------------------------
     constant CLK_PERIOD : time    := 10 ns;
-    constant ADC_HI     : std_logic_vector(11 downto 0) :=
-                              std_logic_vector(to_signed( 150, 12));  -- +150 > +THRESH
-    constant ADC_LO     : std_logic_vector(11 downto 0) :=
-                              std_logic_vector(to_signed(-150, 12));  -- -150 < -THRESH
-    constant ADC_ZERO   : std_logic_vector(11 downto 0) := (others => '0');
+    constant ADC_HI     : std_logic_vector(N_BITS-1 downto 0) :=
+                              std_logic_vector(to_signed( 150, N_BITS));  -- +150 > +THRESH
+    constant ADC_LO     : std_logic_vector(N_BITS-1 downto 0) :=
+                              std_logic_vector(to_signed(-150, N_BITS));  -- -150 < -THRESH
+    constant ADC_ZERO   : std_logic_vector(N_BITS-1 downto 0) := (others => '0');
 
 begin
 
@@ -96,7 +96,7 @@ begin
             CLK          => CLK,
             RESET        => RESET,
             DATA_STR     => DATA_STR,
-            ADC_DATA4    => ADC_DATA4,
+            ADC_DATA    => ADC_DATA,
             THRESH       => THRESH,
             HILO_WINDOW  => HILO_WINDOW,
             COINC_WINDOW => COINC_WINDOW,
@@ -113,11 +113,11 @@ begin
     --  Stimulus
     -- -------------------------------------------------------------------------
     THRESH       <= x"064";  -- 100 ADC counts
-    HILO_WINDOW  <= "00101"; -- 5-sample intra-channel bipolar window
-    COINC_WINDOW <= "000011"; -- 3-sample inter-channel coincidence window
+    HILO_WINDOW  <= std_logic_vector(to_unsigned(5, N_WIN_WIDTH)); -- 5-sample intra-channel bipolar window
+    COINC_WINDOW <= std_logic_vector(to_unsigned(3, N_WIN_WIDTH)); -- 3-sample inter-channel coincidence window
 
     stimulus : process
-        variable batch : adc_data4_type;
+        variable batch : adc_ch_data_type;
 
         -- Apply one DATA_STR pulse and wait through both pipeline stages.
         -- After this procedure returns PRE_TRIG is stable and valid.
@@ -125,9 +125,9 @@ begin
         --                   data_str_d latches '1'
         --   Rising edge 2 : Stage 2 (coinc_proc) latches coinc4;
         --                   Stage 3 (MULT2BIN) is combinational -> PRE_TRIG valid
-        procedure send_batch (constant b : in adc_data4_type) is
+        procedure send_batch (constant b : in adc_ch_data_type) is
         begin
-            ADC_DATA4 <= b;
+            ADC_DATA <= b;
             DATA_STR  <= '1';
             wait until rising_edge(CLK);  -- Stage 1 registers here
             DATA_STR  <= '0';
@@ -153,7 +153,7 @@ begin
         -- -----------------------------------------------------------------------
         --  T01 : All-zero input  ->  PRE_TRIG must be 0
         -- -----------------------------------------------------------------------
-        BIN_THR <= x"1";
+        BIN_THR <= std_logic_vector(to_unsigned(1, N_CHANNEL));
         batch   := (others => (others => ADC_ZERO));
         send_batch(batch);
         assert PRE_TRIG = '0'
@@ -170,7 +170,7 @@ begin
         --    Coinc smear (W=3): k=8->i=8,9,10; k=9->i=9,10,11 -> coinc(0) bins 8..11
         --  count=1 ≥ BIN_THR=1  ->  PRE_TRIG=1
         -- -----------------------------------------------------------------------
-        BIN_THR <= x"1";
+        BIN_THR <= std_logic_vector(to_unsigned(1, N_CHANNEL));
         batch   := (others => (others => ADC_ZERO));
         batch(0)(5) := ADC_HI;
         batch(0)(8) := ADC_LO;
@@ -186,7 +186,7 @@ begin
         --
         --  Same signal as T02; only 1 channel fires -> count=1 < BIN_THR=2
         -- -----------------------------------------------------------------------
-        BIN_THR <= x"2";
+        BIN_THR <= std_logic_vector(to_unsigned(2, N_CHANNEL));
         batch   := (others => (others => ADC_ZERO));
         batch(0)(5) := ADC_HI;
         batch(0)(8) := ADC_LO;
@@ -204,7 +204,7 @@ begin
         --  Coinc: both open bins 8..11
         --  count=2 at bins 8..11  ≥  BIN_THR=2  ->  PRE_TRIG=1
         -- -----------------------------------------------------------------------
-        BIN_THR <= x"2";
+        BIN_THR <= std_logic_vector(to_unsigned(2, N_CHANNEL));
         batch   := (others => (others => ADC_ZERO));
         batch(0)(5) := ADC_HI;  batch(0)(8) := ADC_LO;
         batch(1)(5) := ADC_HI;  batch(1)(8) := ADC_LO;
@@ -224,7 +224,7 @@ begin
         --    Coinc (W=3): k=5->i=5,6,7; k=6->i=6,7,8  ->  coinc(1) bins 5..8
         --  Overlap at bins 5,6: count=2 ≥ BIN_THR=2  ->  PRE_TRIG=1
         -- -----------------------------------------------------------------------
-        BIN_THR <= x"2";
+        BIN_THR <= std_logic_vector(to_unsigned(2, N_CHANNEL));
         batch   := (others => (others => ADC_ZERO));
         batch(0)(0) := ADC_HI;  batch(0)(3) := ADC_LO;
         batch(1)(2) := ADC_HI;  batch(1)(5) := ADC_LO;
@@ -243,7 +243,7 @@ begin
         --  Ch1: Hi@10, Lo@13 ->  GATE(13,14) ->  coinc(1) bins 13..16
         --  No overlap between 3..6 and 13..16  ->  PRE_TRIG=0
         -- -----------------------------------------------------------------------
-        BIN_THR <= x"2";
+        BIN_THR <= std_logic_vector(to_unsigned(2, N_CHANNEL));
         batch   := (others => (others => ADC_ZERO));
         batch(0)(0)  := ADC_HI;  batch(0)(3)  := ADC_LO;
         batch(1)(10) := ADC_HI;  batch(1)(13) := ADC_LO;
@@ -261,9 +261,9 @@ begin
         --  Ch0-Ch3: Hi@5, Lo@8  ->  GATE(8,9)=1 on all four channels
         --  count=4 at bins 8..11  ≥  BIN_THR=4  ->  PRE_TRIG=1
         -- -----------------------------------------------------------------------
-        BIN_THR <= x"4";
+        BIN_THR <= std_logic_vector(to_unsigned(4, N_CHANNEL));
         batch   := (others => (others => ADC_ZERO));
-        for ch in 0 to 3 loop
+        for ch in 0 to N_CHANNEL-1 loop
             batch(ch)(5) := ADC_HI;
             batch(ch)(8) := ADC_LO;
         end loop;
@@ -292,7 +292,7 @@ begin
         --           Union: bins 0,1,2
         --    PRE_TRIG_B=1 (bins 0..2, count=1 ≥ BIN_THR=1)
         -- -----------------------------------------------------------------------
-        BIN_THR <= x"1";
+        BIN_THR <= std_logic_vector(to_unsigned(1, N_CHANNEL));
         batch   := (others => (others => ADC_ZERO));
         batch(0)(N_SAMPLES-4) := ADC_HI;
         batch(0)(N_SAMPLES-2) := ADC_LO;
@@ -314,7 +314,7 @@ begin
         -- -----------------------------------------------------------------------
         --  T09 : RESET clears coinc carry  ->  after reset, empty batch gives PRE_TRIG=0
         -- -----------------------------------------------------------------------
-        BIN_THR <= x"1";
+        BIN_THR <= std_logic_vector(to_unsigned(1, N_CHANNEL));
         -- Reproduce same Batch-A carry state as T08
         batch   := (others => (others => ADC_ZERO));
         batch(0)(N_SAMPLES-4) := ADC_HI;

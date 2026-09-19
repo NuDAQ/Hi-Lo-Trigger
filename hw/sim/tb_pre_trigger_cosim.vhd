@@ -29,11 +29,11 @@ architecture sim of tb_pre_trigger_cosim is
     signal CLK          : std_logic := '0';
     signal RESET        : std_logic := '1';
     signal DATA_STR     : std_logic := '0';
-    signal ADC_DATA4    : adc_data4_type := (others => (others => (others => '0')));
-    signal THRESH       : std_logic_vector(11 downto 0);
-    signal HILO_WINDOW  : std_logic_vector( 4 downto 0);
-    signal COINC_WINDOW : std_logic_vector( 5 downto 0);
-    signal BIN_THR      : std_logic_vector( 3 downto 0);
+    signal ADC_DATA    : adc_ch_data_type := (others => (others => (others => '0')));
+    signal THRESH       : std_logic_vector(N_BITS-1 downto 0);
+    signal HILO_WINDOW  : std_logic_vector(N_WIN_WIDTH-1 downto 0);
+    signal COINC_WINDOW : std_logic_vector(N_WIN_WIDTH-1 downto 0);
+    signal BIN_THR      : std_logic_vector(N_CHANNEL-1 downto 0);
     signal PRE_TRIG     : std_logic;
 
     constant CLK_PERIOD : time := 10 ns;
@@ -64,7 +64,7 @@ begin
             CLK          => CLK,
             RESET        => RESET,
             DATA_STR     => DATA_STR,
-            ADC_DATA4    => ADC_DATA4,
+            ADC_DATA    => ADC_DATA,
             THRESH       => THRESH,
             HILO_WINDOW  => HILO_WINDOW,
             COINC_WINDOW => COINC_WINDOW,
@@ -82,23 +82,23 @@ begin
         variable in_line    : line;
         variable out_line   : line;
         variable val        : integer;
-        variable batch      : adc_data4_type;
+        variable batch      : adc_ch_data_type;
     begin
         -- Static Configuration
-        HILO_WINDOW  <= "00101";  -- 5 samples
-        COINC_WINDOW <= "100000"; -- 32 samples
-        BIN_THR      <= x"2";     -- N=2 Coincidence 
+        HILO_WINDOW  <= std_logic_vector(to_unsigned(5, N_WIN_WIDTH));  -- 5 samples
+        COINC_WINDOW <= std_logic_vector(to_unsigned(32, N_WIN_WIDTH)); -- 32 samples
+        BIN_THR      <= std_logic_vector(to_unsigned(2, N_CHANNEL)); -- N=2 coincidence
 
         -- Loop through the 7 threshold values
         for i in 0 to 6 loop
             
             -- 1. Apply the new hardware threshold
-            THRESH <= std_logic_vector(to_signed(THRESH_SWEEP(i), 12));
+            THRESH <= std_logic_vector(to_signed(THRESH_SWEEP(i), N_BITS));
 
             -- 2. Hard Reset the DUT for a clean run
             RESET <= '1';
             DATA_STR <= '0';
-            ADC_DATA4 <= (others => (others => (others => '0')));
+            ADC_DATA <= (others => (others => (others => '0')));
             wait until rising_edge(CLK);
             wait until rising_edge(CLK);
             RESET <= '0';
@@ -115,14 +115,14 @@ begin
                 readline(stim_file, in_line);
 
                 -- Parse one channel-major batch (4 * N_SAMPLES integers).
-                for ch in 0 to 3 loop
+                for ch in 0 to N_CHANNEL-1 loop
                     for samp in 0 to N_SAMPLES-1 loop
                         read(in_line, val);
-                        batch(ch)(samp) := std_logic_vector(to_signed(val, 12));
+                        batch(ch)(samp) := std_logic_vector(to_signed(val, N_BITS));
                     end loop;
                 end loop;
 
-                ADC_DATA4 <= batch;
+                ADC_DATA <= batch;
                 DATA_STR  <= '1';
 
                 wait until rising_edge(CLK);

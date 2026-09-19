@@ -53,19 +53,19 @@ architecture sim of tb_pre_trigger_1ch is
     signal RESET       : std_logic := '1';
     signal DATA_STR    : std_logic := '0';
     signal ADC_DATA    : adc_data_type := (others => (others => '0'));
-    signal THRESH      : std_logic_vector(11 downto 0);
-    signal HILO_WINDOW : std_logic_vector( 4 downto 0) := "00101";
+    signal THRESH      : std_logic_vector(N_BITS-1 downto 0);
+    signal HILO_WINDOW : std_logic_vector(N_WIN_WIDTH-1 downto 0) := std_logic_vector(to_unsigned(5, N_WIN_WIDTH));
     signal GATE        : std_logic_vector(0 to N_SAMPLES-1);
 
     -- -------------------------------------------------------------------------
     --  Testbench constants
     -- -------------------------------------------------------------------------
     constant CLK_PERIOD : time    := 10 ns;
-    constant ADC_HI     : std_logic_vector(11 downto 0) :=
-                              std_logic_vector(to_signed( 150, 12));  -- +150
-    constant ADC_LO     : std_logic_vector(11 downto 0) :=
-                              std_logic_vector(to_signed(-150, 12));  -- -150
-    constant ADC_ZERO   : std_logic_vector(11 downto 0) := (others => '0');
+    constant ADC_HI     : std_logic_vector(N_BITS-1 downto 0) :=
+                              std_logic_vector(to_signed( 150, N_BITS));  -- +150
+    constant ADC_LO     : std_logic_vector(N_BITS-1 downto 0) :=
+                              std_logic_vector(to_signed(-150, N_BITS));  -- -150
+    constant ADC_ZERO   : std_logic_vector(N_BITS-1 downto 0) := (others => '0');
 
 begin
 
@@ -295,6 +295,34 @@ begin
                 report "T09 expired first crossing must no longer trigger" severity failure;
         end loop;
         report "T09 PASS  Both polarities retain multi-batch carry";
+
+        -- T10: the 8-bit maximum spans sixteen aggregates. Hi@0 and Lo@1
+        -- overlap at global samples 1..254, with no wrap at 128 or 255.
+        RESET <= '1';
+        wait until rising_edge(CLK);
+        RESET <= '0';
+        HILO_WINDOW <= x"FF";
+        b := (others => ADC_ZERO);
+        b(0) := ADC_HI;
+        b(1) := ADC_LO;
+        send_batch(b);
+        exp := (others => '1');
+        exp(0) := '0';
+        assert GATE = exp report "T10 first aggregate overlap" severity failure;
+        b := (others => ADC_ZERO);
+        for batch_index in 1 to 14 loop
+            send_batch(b);
+            assert GATE = (GATE'range => '1')
+                report "T10 W=255 carry expired too early" severity failure;
+        end loop;
+        send_batch(b);
+        exp := (others => '1');
+        exp(15) := '0';
+        assert GATE = exp report "T10 W=255 expiration boundary" severity failure;
+        send_batch(b);
+        assert GATE = (GATE'range => '0')
+            report "T10 W=255 carry must expire" severity failure;
+        report "T10 PASS  Full eight-bit Hi-Lo window";
 
         -- -----------------------------------------------------------------------
         report "========================================";

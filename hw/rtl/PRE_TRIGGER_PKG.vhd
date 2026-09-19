@@ -20,31 +20,24 @@ use ieee.numeric_std.all;
 
 PACKAGE PRE_TRIGGER_pkg IS
 
-    -- Batch size: number of ADC samples delivered per DATA_STR pulse.
-    -- Must match the ADC readout block. Valid range: 8 to 64.
-    constant N_SAMPLES : integer := 16;
+    -- Source profile: change here before synthesis, never at runtime.
+    -- v3.0 qualifies 16 samples x 4 channels x 12 bits for AI-Trigger-System.
+    constant N_SAMPLES   : positive := 16;
+    constant N_BITS      : positive := 12;
+    constant N_CHANNEL   : positive := 4;
+    constant N_WIN_WIDTH : positive := 8;
 
-    -- Per-channel sample batch: N_SAMPLES x 12 bits (index N_SAMPLES-1 = newest)
-    type adc_data_type    is array (0 to N_SAMPLES-1) of STD_LOGIC_VECTOR(11 downto 0);
-
-    -- 8-channel ADC array (used by HiLoPath)
-    type adc_data8_type   is array (0 to  7) of adc_data_type;
-
-    -- 4-channel ADC array (used by 4-ch Hi-Lo PreTrigger)
-    type adc_data4_type   is array (0 to  3) of adc_data_type;
-
-    -- Intra-batch window counters: N_SAMPLES x 8-bit countdown
-    type time_window_type is array (0 to N_SAMPLES-1) of unsigned(7 downto 0);
-
-    -- Per-channel gate outputs: N_SAMPLES time-bin gate bits per channel
-    type gate8_type       is array (0 to  7) of STD_LOGIC_VECTOR(0 to N_SAMPLES-1);  -- 8-ch (legacy)
-    type gate4_type       is array (0 to  3) of STD_LOGIC_VECTOR(0 to N_SAMPLES-1);  -- 4-ch Hi-Lo
-
-    -- Multiplicity vectors: one bit per channel, N_SAMPLES time bins
-    type mult32_type      is array (0 to N_SAMPLES-1) of STD_LOGIC_VECTOR(0 to  7);  -- 8-ch (legacy)
-    type mult4x32_type    is array (0 to N_SAMPLES-1) of STD_LOGIC_VECTOR(3 downto 0); -- 4-ch Hi-Lo
-
-    -- Coincidence carry-over: one 8-bit counter per channel (4 channels)
-    type carry4_type      is array (0 to  3) of unsigned(7 downto 0);
+    -- Index N_SAMPLES-1 is newest; windows count accepted samples.
+    type adc_data_type is array (0 to N_SAMPLES-1)
+        of std_logic_vector(N_BITS-1 downto 0);
+    type adc_ch_data_type is array (0 to N_CHANNEL-1) of adc_data_type;
+    type time_window_type is array (0 to N_SAMPLES-1)
+        of unsigned(N_WIN_WIDTH-1 downto 0);
+    type gate_type is array (0 to N_CHANNEL-1)
+        of std_logic_vector(0 to N_SAMPLES-1);
+    type mult_type is array (0 to N_SAMPLES-1)
+        of std_logic_vector(N_CHANNEL-1 downto 0);
+    type carry_type is array (0 to N_CHANNEL-1)
+        of unsigned(N_WIN_WIDTH-1 downto 0);
 
 End package PRE_TRIGGER_pkg;

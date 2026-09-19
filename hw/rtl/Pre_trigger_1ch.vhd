@@ -26,16 +26,16 @@ port (
     RESET       : in  std_logic;
     DATA_STR    : in  std_logic;
     ADC_DATA    : in  adc_data_type;              -- sample N_SAMPLES-1 is the newest
-    THRESH      : in  std_logic_vector(11 downto 0);
-    HILO_WINDOW : in  std_logic_vector( 4 downto 0);
+    THRESH      : in  std_logic_vector(N_BITS-1 downto 0);
+    HILO_WINDOW : in  std_logic_vector(N_WIN_WIDTH-1 downto 0);
     GATE        : out std_logic_vector(0 to N_SAMPLES-1)
 );
 end PRE_TRIGGER_1CH;
 
 architecture behav of PRE_TRIGGER_1CH is
 
-    signal carry_count_hi_d : unsigned(7 downto 0);
-    signal carry_count_lo_d : unsigned(7 downto 0);
+    signal carry_count_hi_d : unsigned(N_WIN_WIDTH-1 downto 0);
+    signal carry_count_lo_d : unsigned(N_WIN_WIDTH-1 downto 0);
 
 begin
 
@@ -44,14 +44,14 @@ begin
         variable v_ot_lo       : std_logic_vector(0 to N_SAMPLES-1);
         variable v_gate_hi     : std_logic_vector(0 to N_SAMPLES-1);
         variable v_gate_lo     : std_logic_vector(0 to N_SAMPLES-1);
-        variable carry_hi_next : unsigned(7 downto 0);
-        variable carry_lo_next : unsigned(7 downto 0);
-        variable adc_s         : signed(11 downto 0);
-        variable thresh_pos    : signed(11 downto 0);
-        variable thresh_neg    : signed(11 downto 0);
-        variable win_int       : integer range 0 to 255;
-        variable carry_hi_int  : integer range 0 to 255;
-        variable carry_lo_int  : integer range 0 to 255;
+        variable carry_hi_next : unsigned(N_WIN_WIDTH-1 downto 0);
+        variable carry_lo_next : unsigned(N_WIN_WIDTH-1 downto 0);
+        variable adc_s         : signed(N_BITS-1 downto 0);
+        variable thresh_pos    : signed(N_BITS-1 downto 0);
+        variable thresh_neg    : signed(N_BITS-1 downto 0);
+        variable win_int       : integer range 0 to 2**N_WIN_WIDTH-1;
+        variable carry_hi_int  : integer range 0 to 2**N_WIN_WIDTH-1;
+        variable carry_lo_int  : integer range 0 to 2**N_WIN_WIDTH-1;
         variable last_hi_k     : integer range 0 to N_SAMPLES-1;
         variable last_lo_k     : integer range 0 to N_SAMPLES-1;
         variable found_hi      : std_logic;
@@ -115,16 +115,16 @@ begin
 
                 carry_hi_next := (others => '0');
                 if found_hi = '1' and (last_hi_k + win_int) > N_SAMPLES then
-                    carry_hi_next := to_unsigned(last_hi_k + win_int - N_SAMPLES, 8);
+                    carry_hi_next := to_unsigned(last_hi_k + win_int - N_SAMPLES, N_WIN_WIDTH);
                 elsif carry_hi_int > N_SAMPLES then
-                    carry_hi_next := to_unsigned(carry_hi_int - N_SAMPLES, 8);
+                    carry_hi_next := to_unsigned(carry_hi_int - N_SAMPLES, N_WIN_WIDTH);
                 end if;
 
                 carry_lo_next := (others => '0');
                 if found_lo = '1' and (last_lo_k + win_int) > N_SAMPLES then
-                    carry_lo_next := to_unsigned(last_lo_k + win_int - N_SAMPLES, 8);
+                    carry_lo_next := to_unsigned(last_lo_k + win_int - N_SAMPLES, N_WIN_WIDTH);
                 elsif carry_lo_int > N_SAMPLES then
-                    carry_lo_next := to_unsigned(carry_lo_int - N_SAMPLES, 8);
+                    carry_lo_next := to_unsigned(carry_lo_int - N_SAMPLES, N_WIN_WIDTH);
                 end if;
 
                 carry_count_hi_d <= carry_hi_next;
