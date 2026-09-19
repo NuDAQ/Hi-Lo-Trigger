@@ -1,0 +1,15 @@
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:161:9:@46ns:(report note): T01 PASS  all-zero input -> PRE_TRIG=0
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:180:9:@96ns:(report note): T02 PASS  1-ch Hi@5 Lo@8, BIN_THR=1 -> PRE_TRIG=1
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:196:9:@146ns:(report note): T03 PASS  1-ch Hi@5 Lo@8, BIN_THR=2 -> PRE_TRIG=0
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:214:9:@196ns:(report note): T04 PASS  2-ch simultaneous Hi@5 Lo@8, BIN_THR=2 -> PRE_TRIG=1
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:235:9:@246ns:(report note): T05 PASS  2-ch offset=2 (< CW=3), BIN_THR=2 -> PRE_TRIG=1
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:254:9:@296ns:(report note): T06 PASS  2-ch offset=7 (> CW=3), BIN_THR=2 -> PRE_TRIG=0
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:273:9:@346ns:(report note): T07 PASS  4-ch simultaneous Hi@5 Lo@8, BIN_THR=4 -> PRE_TRIG=1
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:302:9:@396ns:(report note): T08a PASS  Batch-A: Ch0 Hi@12 Lo@14 -> PRE_TRIG=1, coinc carry=2
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:310:9:@416ns:(report note): T08b PASS  Batch-B: all-zero -> PRE_TRIG=1 from cross-batch coinc carry
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:330:9:@516ns:(report note): T09 PASS  RESET clears coinc carry -> PRE_TRIG=0
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:367:9:@1296ns:(report note): T10 PASS  Full eight-bit coincidence window and expiration
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:370:9:@1296ns:(report note): ========================================
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:371:9:@1296ns:(report note): ALL PRE_TRIGGER TESTS PASSED
+/Users/albert/Library/Mobile Documents/com~apple~CloudDocs/Works/UC_Irvine_Group/Hi-Lo-Trigger/hw/sim/tb_pre_trigger.vhd:372:9:@1296ns:(report note): ========================================
+simulation finished @1296ns

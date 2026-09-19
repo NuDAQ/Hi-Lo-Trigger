@@ -1,0 +1,7 @@
+[
+  {
+    "test": "packing",
+    "passed": false,
+    "error": "16-sample profile needs two clocks/event, got 1"
+  }
+]

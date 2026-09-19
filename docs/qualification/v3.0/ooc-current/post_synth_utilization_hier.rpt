@@ -1,0 +1,49 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
+| Date         : Sat Sep 19 04:02:07 2026
+| Host         : AlbertsUbuntu running 64-bit Ubuntu 22.04.5 LTS
+| Command      : report_utilization -hierarchical -file /tmp/hilo-v3-qual.sYGBtT/current/build/ooc/post_synth_utilization_hier.rpt
+| Design       : PRE_TRIGGER
+| Device       : xcku5p-ffvb676-2-e
+| Speed File   : -2
+| Design State : Synthesized
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++-----------------------+---------------------------------+------------+------------+---------+------+-----+--------+--------+------+------------+
+|        Instance       |              Module             | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | URAM | DSP Blocks |
++-----------------------+---------------------------------+------------+------------+---------+------+-----+--------+--------+------+------------+
+| PRE_TRIGGER           |                           (top) |       2407 |       2407 |       0 |    0 | 225 |      0 |      0 |    0 |          0 |
+|   (PRE_TRIGGER)       |                           (top) |        523 |        523 |       0 |    0 |  97 |      0 |      0 |    0 |          0 |
+|   chan_gen[0].U_CH    |                 PRE_TRIGGER_1CH |        459 |        459 |       0 |    0 |  32 |      0 |      0 |    0 |          0 |
+|   chan_gen[1].U_CH    | PRE_TRIGGER_1CH__parameterized0 |        459 |        459 |       0 |    0 |  32 |      0 |      0 |    0 |          0 |
+|   chan_gen[2].U_CH    | PRE_TRIGGER_1CH__parameterized1 |        459 |        459 |       0 |    0 |  32 |      0 |      0 |    0 |          0 |
+|   chan_gen[3].U_CH    | PRE_TRIGGER_1CH__parameterized2 |        459 |        459 |       0 |    0 |  32 |      0 |      0 |    0 |          0 |
+|   mult_gen[0].U_MULT  |                     MULT2BIN__1 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[10].U_MULT |                    MULT2BIN__11 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[11].U_MULT |                    MULT2BIN__12 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[12].U_MULT |                    MULT2BIN__13 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[13].U_MULT |                    MULT2BIN__14 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[14].U_MULT |                    MULT2BIN__15 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[15].U_MULT |                        MULT2BIN |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[1].U_MULT  |                     MULT2BIN__2 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[2].U_MULT  |                     MULT2BIN__3 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[3].U_MULT  |                     MULT2BIN__4 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[4].U_MULT  |                     MULT2BIN__5 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[5].U_MULT  |                     MULT2BIN__6 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[6].U_MULT  |                     MULT2BIN__7 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[7].U_MULT  |                     MULT2BIN__8 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[8].U_MULT  |                     MULT2BIN__9 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+|   mult_gen[9].U_MULT  |                    MULT2BIN__10 |          3 |          3 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
++-----------------------+---------------------------------+------------+------------+---------+------+-----+--------+--------+------+------------+
+
+

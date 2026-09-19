@@ -1,0 +1,7 @@
+[
+  {
+    "test": "isolation",
+    "passed": false,
+    "error": "\nArrays are not equal\n\nMismatched elements: 1 / 2 (50%)\nMismatch at index:\n [0]: 0 (ACTUAL), 1 (DESIRED)\nMax absolute difference among violations: 1\nMax relative difference among violations: 1.\n ACTUAL: array([0, 0])\n DESIRED: array([1, 0])"
+  }
+]

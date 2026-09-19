@@ -5,6 +5,8 @@
 
 !submodule/
 !submodule/**
+**/__pycache__/
+**/*.pyc
 
 !far_results.json
 
