@@ -66,8 +66,26 @@ def check_isolation(work):
     np.testing.assert_array_equal(actual, [1, 0])
 
 
+def check_reference(work):
+    # Independent worked example: hi@14 remains active through 44; lo@32
+    # overlaps at 32..44, then a two-sample coincidence extends through 45.
+    from plot_rtl_emulation import evaluate_windows
+    hi = np.zeros((4, 64), dtype=bool)
+    lo = np.zeros_like(hi)
+    hi[0, 14] = True
+    lo[0, 32] = True
+    gate, coinc, mult = evaluate_windows(hi, lo, 31, 2)
+    np.testing.assert_array_equal(np.flatnonzero(gate[0]), np.arange(32, 45))
+    np.testing.assert_array_equal(np.flatnonzero(coinc[0]), np.arange(32, 46))
+    np.testing.assert_array_equal(np.flatnonzero(mult), np.arange(32, 46))
+    for hilo, coincidence in ((0, 2), (31, 0)):
+        _, coinc, mult = evaluate_windows(hi, lo, hilo, coincidence)
+        assert not coinc.any() and not mult.any()
+
+
 def main():
-    checks = {"packing": check_packing, "isolation": check_isolation}
+    checks = {"packing": check_packing, "isolation": check_isolation,
+              "reference": check_reference}
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", choices=checks, action="append")
     parser.add_argument("--output", type=Path, default=ROOT / "build/cosim")
@@ -80,7 +98,7 @@ def main():
             try:
                 checks[name](work)
                 result = {"test": name, "passed": True}
-            except (AssertionError, ValueError) as error:
+            except (AssertionError, ValueError, ImportError) as error:
                 result = {"test": name, "passed": False, "error": str(error)}
             if (work / "ghdl.log").exists():
                 (args.output / f"{name}.log").write_text((work / "ghdl.log").read_text())

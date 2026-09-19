@@ -1,14 +1,35 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.backends.backend_pdf as pdf_backend
 import os
 import glob
 import argparse
 import re
 
 
+def evaluate_windows(v_ot_hi, v_ot_lo, hilo_window, coinc_window):
+    """Historical Boolean window emulator, also usable without plotting.
+
+    Inputs are channel x accepted-sample threshold crossings. Unlike the RTL,
+    this evaluates the full sample history, with no aggregate/carry machinery.
+    """
+    channels, samples = v_ot_hi.shape
+    gate = np.zeros((channels, samples), dtype=bool)
+    coinc = np.zeros((channels, samples), dtype=bool)
+    for c in range(channels):
+        for i in range(samples):
+            hi_valid = np.any(v_ot_hi[c, max(0, i - hilo_window + 1):i + 1])
+            lo_valid = np.any(v_ot_lo[c, max(0, i - hilo_window + 1):i + 1])
+            if hi_valid and lo_valid:
+                gate[c, i] = True
+    for c in range(channels):
+        for i in range(samples):
+            if np.any(gate[c, max(0, i - coinc_window + 1):i + 1]):
+                coinc[c, i] = True
+    return gate, coinc, np.sum(coinc, axis=0)
+
+
 def _build_figure(npy_path, snr_target=3.0, global_sigma=1.020833, page_label=None):
     """Build and return a matplotlib figure for one event file."""
+    import matplotlib.pyplot as plt
     data = np.load(npy_path)
     channels, samples = data.shape
 
@@ -30,25 +51,8 @@ def _build_figure(npy_path, snr_target=3.0, global_sigma=1.020833, page_label=No
     v_ot_hi = data_sigma > effective_sigma_thr
     v_ot_lo = data_sigma < -effective_sigma_thr
 
-    gate = np.zeros((channels, samples), dtype=bool)
-    coinc = np.zeros((channels, samples), dtype=bool)
-
-    # 3. Emulate PRE_TRIGGER_1CH.vhd (Hi-Lo window AND logic)
-    for c in range(channels):
-        for i in range(samples):
-            hi_valid = np.any(v_ot_hi[c, max(0, i - HILO_WINDOW + 1):i + 1])
-            lo_valid = np.any(v_ot_lo[c, max(0, i - HILO_WINDOW + 1):i + 1])
-            if hi_valid and lo_valid:
-                gate[c, i] = True
-
-    # 4. Emulate PRE_TRIGGER.vhd (Coincidence smearing & carry-over)
-    for c in range(channels):
-        for i in range(samples):
-            if np.any(gate[c, max(0, i - COINC_WINDOW + 1):i + 1]):
-                coinc[c, i] = True
-
-    # 5. Emulate MULT2BIN.vhd
-    multiplicity = np.sum(coinc, axis=0)
+    # 3-5. Reuse the same Boolean window model in plots and RTL regression.
+    gate, coinc, multiplicity = evaluate_windows(v_ot_hi, v_ot_lo, HILO_WINDOW, COINC_WINDOW)
 
     # --- Plotting Architecture ---
     fig, axes = plt.subplots(channels + 1, 1, figsize=(12, 2.5 * (channels + 1)), sharex=True)
@@ -112,6 +116,7 @@ def _build_figure(npy_path, snr_target=3.0, global_sigma=1.020833, page_label=No
 
 
 def plot_rtl_emulation(npy_path, output_pdf_path, global_sigma=1.020833, snr_target=3.0):
+    import matplotlib.pyplot as plt
     if not os.path.exists(npy_path):
         print(f"[!] Error: File not found at {npy_path}")
         return
@@ -134,6 +139,8 @@ def _sort_key(fpath):
 
 
 def plot_false_triggers_batch(snr, data_dir, output_pdf_path, global_sigma=1.020833, max_events=None):
+    import matplotlib.pyplot as plt
+    import matplotlib.backends.backend_pdf as pdf_backend
     pattern = os.path.join(data_dir, f"trigger_capture_snr{snr}_thermal_chunk_*.npy_ev*.npy")
     files = sorted(glob.glob(pattern), key=_sort_key)
 
